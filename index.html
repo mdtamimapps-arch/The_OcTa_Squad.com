@@ -435,6 +435,78 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Print: শুধু room allocation certificate — বাকি কিছুই প্রিন্ট হবে না */
+        @media print {
+            @page {
+                margin: 14mm;
+                size: auto;
+            }
+
+            html,
+            body {
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                background: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body * {
+                visibility: hidden !important;
+            }
+
+            #octa-result-screen,
+            #octa-result-screen * {
+                visibility: visible !important;
+            }
+
+            #octa-result-screen {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                display: block !important;
+                margin: 0 !important;
+                padding: 1.25rem !important;
+                box-sizing: border-box !important;
+                border: 4px double #00c896 !important;
+                background: #0a0a0a url('https://www.transparenttextures.com/patterns/carbon-fibre.png') !important;
+                box-shadow: none !important;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            #octa-result-screen .octa-cert-title,
+            #octa-result-screen .octa-room-info,
+            #octa-result-screen .octa-price-tag {
+                color: #fff !important;
+            }
+
+            #octa-result-screen .octa-price-tag {
+                color: #ffcc00 !important;
+            }
+
+            #octa-result-screen hr {
+                border-color: #00f2ff !important;
+            }
+
+            /* বাটন ও “print this copy…” হিন্ট প্রিন্টে বাদ */
+            #octa-result-screen .octa-print-actions,
+            #octa-result-screen .octa-print-note {
+                display: none !important;
+            }
+
+            #login-overlay,
+            #loader-overlay,
+            #image-modal,
+            #details-modal {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
     </style>
 </head>
 
@@ -713,9 +785,9 @@
                         <hr style="border: 1px solid var(--octa-r-primary); opacity: 0.6;">
                         <div id="octa-output-content" class="octa-room-info"></div>
                         <div id="octa-output-price" class="octa-price-tag"></div>
-                        <p class="text-xs text-slate-500 text-center mt-4">Print this copy before entering the room (if
+                        <p class="octa-print-note text-xs text-slate-500 text-center mt-4">Print this copy before entering the room (if
                             your squad still uses paper lore).</p>
-                        <div class="text-center">
+                        <div class="text-center octa-print-actions">
                             <button type="button" class="octa-print-btn" onclick="window.print()">Print
                                 certificate</button>
                             <button type="button" class="octa-print-btn octa-muted" onclick="octaRoomReroll()">Re-roll</button>
