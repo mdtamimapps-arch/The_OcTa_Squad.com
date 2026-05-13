@@ -436,6 +436,235 @@
             }
         }
 
+        /* ═══ Financial Ledger · premium RGB calculator ═══ */
+        @keyframes ledger-rgb-move {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .ledger-rgb-wrap {
+            position: relative;
+            border-radius: 1.5rem;
+            padding: 3px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400% 400%;
+            animation: ledger-rgb-move 9s linear infinite;
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.25), 0 0 80px rgba(168, 85, 247, 0.12);
+        }
+
+        .ledger-rgb-wrap::after {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: inherit;
+            background: inherit;
+            background-size: inherit;
+            animation: inherit;
+            filter: blur(16px);
+            opacity: 0.35;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ledger-inner {
+            position: relative;
+            z-index: 1;
+            border-radius: calc(1.5rem - 3px);
+            background: linear-gradient(165deg, rgba(8, 18, 36, 0.98), rgba(3, 8, 20, 0.99));
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 1.75rem 1.5rem;
+        }
+
+        .ledger-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(148, 163, 184, 0.95);
+        }
+
+        .ledger-select {
+            width: 100%;
+            margin-top: 0.35rem;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 0.65rem;
+            padding: 0.55rem 0.65rem;
+            color: #e2e8f0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .ledger-select:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+        }
+
+        .ledger-input {
+            width: 100%;
+            margin-top: 0.35rem;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(71, 85, 105, 0.6);
+            border-radius: 0.65rem;
+            padding: 0.5rem 0.65rem;
+            color: #f8fafc;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .ledger-input:read-only {
+            opacity: 0.85;
+            border-color: rgba(34, 197, 94, 0.35);
+        }
+
+        .ledger-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .ledger-line small {
+            display: block;
+            font-size: 0.65rem;
+            color: rgba(148, 163, 184, 0.85);
+            margin-top: 0.15rem;
+        }
+
+        .ledger-total-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.08));
+            border: 1px solid rgba(52, 211, 153, 0.35);
+        }
+
+        .ledger-memo-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .ledger-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.65rem 0.75rem;
+            border-radius: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            background: rgba(56, 189, 248, 0.12);
+            color: #7dd3fc;
+            transition: 0.2s;
+        }
+
+        .ledger-btn:hover {
+            background: rgba(56, 189, 248, 0.22);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
+        }
+
+        .ledger-btn-accent {
+            border-color: rgba(168, 85, 247, 0.5);
+            background: rgba(168, 85, 247, 0.15);
+            color: #e9d5ff;
+        }
+
+        /* Cash memo: screen preview + print sink */
+        #ledger-memo-print-root {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .cash-memo-doc {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 1.25rem;
+            background: #fff;
+            color: #0f172a;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 13px;
+            border: 2px dashed #0f172a;
+        }
+
+        .cash-memo-doc h3 {
+            margin: 0 0 0.25rem;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.08em;
+        }
+
+        .cash-memo-meta {
+            text-align: center;
+            font-size: 11px;
+            color: #475569;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 0.75rem;
+        }
+
+        .cash-memo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .cash-memo-table td {
+            padding: 6px 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cash-memo-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .cash-memo-total {
+            font-size: 1.05rem;
+            font-weight: 800;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        @media print {
+
+            body.ledger-memo-printing>*:not(#ledger-memo-print-root),
+            body.ledger-memo-printing #main-content {
+                display: none !important;
+            }
+
+            body.ledger-memo-printing #ledger-memo-print-root {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                clip: auto !important;
+                overflow: visible !important;
+                white-space: normal !important;
+            }
+        }
+
         /* স্ক্রিনে প্রিন্ট সিঙ্ক লুকানো (কনটেন্ট beforeprint এ ক্লোন হয়) */
         #octa-print-only-root {
             position: absolute;
@@ -533,6 +762,8 @@
 
     <!-- প্রিন্টের সময় শুধু এখানে ক্লোন বসে — পুরো সাইট নয় -->
     <div id="octa-print-only-root" aria-hidden="true"></div>
+    <!-- Cash memo প্রিন্ট শুধু মেমো -->
+    <div id="ledger-memo-print-root" aria-hidden="true"></div>
 
     <!-- Image Modal -->
     <div id="image-modal"
@@ -717,48 +948,135 @@
                     </div>
                 </div>
 
-                <div
-                    class="glass-card p-10 rounded-3xl border-sky-500/50 shadow-[0_0_40px_rgba(56,189,248,0.1)] relative">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-[50px] rounded-full"></div>
-                    <h2 class="text-3xl font-bold mb-8 text-center font-mono uppercase text-sky-400">> Financial Ledger
-                    </h2>
+                <!--
+                  ═══════════════════════════════════════════════════════════════
+                  FINANCIAL LEDGER — হিন্ট (পরে নিজে এডিট করো):
+                  · নতুন রুম জোড়া: ledgerPairConfig অবজেক্টে key = "NAME1|NAME2" (বর্ণমালা সর্ট)
+                    base (ভাড়া), treat (ঐচ্ছিক, যেমন Samiul|Lalon = 400)
+                  · সার্ভিস পুল / মাথাপিছু: LEDGER_SERVICE_POOL, LEDGER_HEADS
+                  · WiFi লক: LEDGER_WIFI_FIXED — চেঞ্জ করতে চাইলে কনস্ট বদলাও
+                  · USD রেট: LEDGER_USD_PER_BDT (প্রদর্শন মাত্র)
+                  · নতুন লাইন আইটেম: HTML এ ledger-manual-grid এ row + ledgerRecalc() এ ফিল্ড যোগ
+                  · bKash নম্বর: payViaBkash() ভিতরে bKashNumber
+                  ═══════════════════════════════════════════════════════════════
+                -->
+                <div class="ledger-rgb-wrap relative">
+                    <div class="ledger-inner">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center font-mono uppercase text-sky-300 tracking-tight">
+                            &gt; Financial Ledger</h2>
+                        <p class="text-center text-[10px] text-sky-500/60 font-mono uppercase tracking-widest mb-6">Premium
+                            calculator · Octa Squad</p>
 
-                    <div class="bg-black/50 p-6 rounded-2xl border border-sky-900/50 mb-8 font-mono">
-                        <ul class="space-y-4 text-sm md:text-base">
-                            <li
-                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-home w-6 text-sky-500/50"></i> Base
-                                    Rent</span>
-                                <span class="text-white">৳5,000</span>
-                            </li>
-                            <li
-                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-bolt w-6 text-sky-500/50"></i>
-                                    Energy/Water</span>
-                                <span class="text-white">৳1,200</span>
-                            </li>
-                            <li
-                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-wifi w-6 text-sky-500/50"></i>
-                                    Network</span>
-                                <span class="text-white">৳300</span>
-                            </li>
-                            <li class="flex justify-between font-bold text-xl pt-4">
-                                <span class="text-sky-400 uppercase tracking-widest">Total Req</span>
-                                <span class="text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]">৳6,500</span>
-                            </li>
-                        </ul>
-                    </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                            <div>
+                                <label class="ledger-label" for="ledger-person-a">Roommate A (required)</label>
+                                <select id="ledger-person-a" class="ledger-select" onchange="ledgerRecalc()">
+                                    <option value="">— Select —</option>
+                                    <option value="SAMIUL">Samiul</option>
+                                    <option value="LALON">Lalon</option>
+                                    <option value="TAMIM">Tamim</option>
+                                    <option value="SAMMO">Sammo</option>
+                                    <option value="MAHEDI">Mahedi</option>
+                                    <option value="SAIF">Saif</option>
+                                    <option value="AKASH">Akash</option>
+                                    <option value="PRANTO">Pranto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="ledger-label" for="ledger-person-b">Roommate B (required)</label>
+                                <select id="ledger-person-b" class="ledger-select" onchange="ledgerRecalc()">
+                                    <option value="">— Select —</option>
+                                    <option value="SAMIUL">Samiul</option>
+                                    <option value="LALON">Lalon</option>
+                                    <option value="TAMIM">Tamim</option>
+                                    <option value="SAMMO">Sammo</option>
+                                    <option value="MAHEDI">Mahedi</option>
+                                    <option value="SAIF">Saif</option>
+                                    <option value="AKASH">Akash</option>
+                                    <option value="PRANTO">Pranto</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p id="ledger-pair-hint" class="text-xs text-amber-400/90 font-mono mb-4 min-h-[1.25rem]"></p>
 
-                    <div class="mt-6">
-                        <button onclick="payViaBkash()"
-                            class="w-full bg-gradient-to-r from-[#D12053] to-[#e8376d] hover:from-[#A11940] hover:to-[#D12053] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(209,32,83,0.4)] hover:shadow-[0_0_30px_rgba(209,32,83,0.6)] group">
-                            <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg"
-                                class="w-8 h-8 group-hover:scale-110 transition-transform" alt="bKash">
-                            <span class="uppercase tracking-widest font-mono">Transfer Funds</span>
-                        </button>
-                        <p class="text-[10px] text-center text-sky-500/50 mt-4 uppercase tracking-widest font-mono"><i
-                                class="fas fa-lock mr-1"></i> Secured by Octa Squad Crypto-Net</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 ledger-manual-grid">
+                            <div>
+                                <label class="ledger-label" for="ledger-food">Food maker / khala rent (৳)</label>
+                                <input type="number" id="ledger-food" class="ledger-input" min="0" step="1" value="0"
+                                    placeholder="0" oninput="ledgerRecalc()">
+                            </div>
+                            <div>
+                                <label class="ledger-label" for="ledger-electric">Electricity (৳)</label>
+                                <input type="number" id="ledger-electric" class="ledger-input" min="0" step="1" value="0"
+                                    placeholder="0" oninput="ledgerRecalc()">
+                            </div>
+                            <div>
+                                <label class="ledger-label" for="ledger-other">Other cost (৳)</label>
+                                <input type="number" id="ledger-other" class="ledger-input" min="0" step="1" value="0"
+                                    placeholder="0" oninput="ledgerRecalc()">
+                            </div>
+                            <div>
+                                <label class="ledger-label" for="ledger-dustbin">Dustbin fee (৳)</label>
+                                <input type="number" id="ledger-dustbin" class="ledger-input" min="0" step="1" value="0"
+                                    placeholder="0" oninput="ledgerRecalc()">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="ledger-label" for="ledger-meal">Meal bill (৳) — editable anytime</label>
+                                <input type="number" id="ledger-meal" class="ledger-input" min="0" step="1" value="0"
+                                    placeholder="0" oninput="ledgerRecalc()">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="ledger-label" for="ledger-issuer">Cash memo — Issued by (who is billing)</label>
+                            <select id="ledger-issuer" class="ledger-select">
+                                <option value="">— Select —</option>
+                                <option value="Samiul">Samiul</option>
+                                <option value="Lalon">Lalon</option>
+                                <option value="Tamim">Tamim</option>
+                                <option value="Sammo">Sammo</option>
+                                <option value="Mahedi">Mahedi</option>
+                                <option value="Saif">Saif</option>
+                                <option value="Akash">Akash</option>
+                                <option value="Pranto">Pranto</option>
+                            </select>
+                        </div>
+
+                        <div id="ledger-lines" class="font-mono text-sm mb-2 rounded-xl bg-black/40 border border-sky-900/40 px-3 py-2">
+                            <!-- filled by ledgerRecalc() -->
+                        </div>
+
+                        <div class="ledger-total-box font-mono">
+                            <div class="flex justify-between items-center text-sky-300 text-xs uppercase tracking-widest mb-1">
+                                <span>Total (BDT)</span>
+                                <span id="ledger-total-bdt" class="text-xl text-green-400 font-bold">৳0</span>
+                            </div>
+                            <div class="flex justify-between items-center text-slate-400 text-[11px]">
+                                <span>≈ USD (display)</span>
+                                <span id="ledger-total-usd">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="ledger-memo-actions">
+                            <button type="button" class="ledger-btn" onclick="downloadLedgerMemo()">Download cash memo</button>
+                            <button type="button" class="ledger-btn ledger-btn-accent" onclick="printLedgerMemo()">Print cash memo</button>
+                        </div>
+
+                        <div id="ledger-memo-preview-wrap" class="mt-6 hidden">
+                            <p class="text-[10px] text-sky-500/70 font-mono uppercase tracking-widest mb-2">Memo preview</p>
+                            <div id="ledger-memo-preview" class="rounded-lg overflow-hidden border border-slate-600"></div>
+                        </div>
+
+                        <div class="mt-6">
+                            <button type="button" onclick="payViaBkash()"
+                                class="w-full bg-gradient-to-r from-[#D12053] to-[#e8376d] hover:from-[#A11940] hover:to-[#D12053] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(209,32,83,0.4)] hover:shadow-[0_0_30px_rgba(209,32,83,0.6)] group">
+                                <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg"
+                                    class="w-8 h-8 group-hover:scale-110 transition-transform" alt="bKash">
+                                <span class="uppercase tracking-widest font-mono">bKash · Pay total</span>
+                            </button>
+                            <p class="text-[10px] text-center text-sky-500/50 mt-3 uppercase tracking-widest font-mono"><i
+                                    class="fas fa-lock mr-1"></i> Amount = ledger total above · Secured by Octa Squad</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1178,15 +1496,230 @@
             }, 50); // Total 5 seconds (50ms * 100)
         }
 
-        function payViaBkash() {
-            const amount = 6500;
-            const bKashNumber = "017XXXXXXXX"; // replace with real number
-            const paymentUrl = `https://shop.bkash.com/payment/pay?amount=${amount}&receiver=${bKashNumber}`;
+        /* ═══ Financial Ledger JS (pair rent + cash memo) ═══
+           HINT: নতুন জোড়া → ledgerPairConfig এ "A|B" key (বর্ণমালা সর্ট) যোগ করো।
+        */
+        const LEDGER_SERVICE_POOL = 2500;
+        const LEDGER_HEADS = 8;
+        const LEDGER_WIFI_FIXED = 100;
+        const LEDGER_USD_PER_BDT = 120;
 
-            if (confirm("AUTHORIZATION REQUIRED: Transfer ৳6,500 to Base Command?")) {
-                window.location.href = paymentUrl;
+        const ledgerPairConfig = {
+            'LALON|SAMIUL': { base: 2550, label: 'Samiul & Lalon (elite pair)', treat: 400 },
+            'SAMMO|TAMIM': { base: 2500, label: 'Tamim & Sammo', treat: 0 },
+            'MAHEDI|SAIF': { base: 2550, label: 'Mahedi & Saif', treat: 0 },
+            'AKASH|PRANTO': { base: 2400, label: 'Akash & Pranto', treat: 0 }
+        };
+
+        function ledgerPairKey(a, b) {
+            if (!a || !b || a === b) return '';
+            return [a, b].sort().join('|');
+        }
+
+        function ledgerNum(id) {
+            const el = document.getElementById(id);
+            if (!el) return 0;
+            const n = parseFloat(el.value);
+            return Number.isFinite(n) && n > 0 ? n : 0;
+        }
+
+        function ledgerFmt(n) {
+            return '৳' + (Math.round(n * 100) / 100).toLocaleString('en-BD', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
+        function ledgerFmtUsd(bdt) {
+            const usd = bdt / LEDGER_USD_PER_BDT;
+            return '$' + usd.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        let ledgerLastLines = [];
+        let ledgerLastTotal = 0;
+
+        function ledgerRecalc() {
+            const a = document.getElementById('ledger-person-a')?.value || '';
+            const b = document.getElementById('ledger-person-b')?.value || '';
+            const hint = document.getElementById('ledger-pair-hint');
+            const linesEl = document.getElementById('ledger-lines');
+            const key = ledgerPairKey(a, b);
+            const pair = key ? ledgerPairConfig[key] : null;
+
+            const serviceShare = LEDGER_SERVICE_POOL / LEDGER_HEADS;
+            const serviceForTwo = serviceShare * 2;
+
+            if (!a || !b) {
+                if (hint) hint.textContent = 'Select both roommates — base rent follows official Octa pairs.';
+                ledgerLastLines = [];
+                ledgerLastTotal = 0;
+                if (linesEl) linesEl.innerHTML = '<p class="text-slate-500 text-xs py-2">Awaiting pair selection…</p>';
+                document.getElementById('ledger-total-bdt').textContent = '৳0';
+                document.getElementById('ledger-total-usd').textContent = '$0.00';
+                return;
+            }
+
+            if (a === b) {
+                if (hint) hint.textContent = 'Pick two different names.';
+                ledgerLastLines = [];
+                ledgerLastTotal = 0;
+                if (linesEl) linesEl.innerHTML = '<p class="text-red-400/90 text-xs py-2">Same person twice — invalid.</p>';
+                document.getElementById('ledger-total-bdt').textContent = '৳0';
+                document.getElementById('ledger-total-usd').textContent = '$0.00';
+                return;
+            }
+
+            if (!pair) {
+                if (hint) hint.textContent = 'Not a registered room pair. Valid: Samiul+Lalon, Tamim+Sammo, Mahedi+Saif, Akash+Pranto.';
+                ledgerLastLines = [];
+                ledgerLastTotal = 0;
+                if (linesEl) linesEl.innerHTML = '<p class="text-amber-400/90 text-xs py-2">Invalid pair for auto base rent.</p>';
+                document.getElementById('ledger-total-bdt').textContent = '৳0';
+                document.getElementById('ledger-total-usd').textContent = '$0.00';
+                return;
+            }
+
+            if (hint) hint.textContent = '✓ ' + pair.label;
+
+            const base = pair.base;
+            const treat = pair.treat || 0;
+            const wifi = LEDGER_WIFI_FIXED;
+            const food = ledgerNum('ledger-food');
+            const elec = ledgerNum('ledger-electric');
+            const other = ledgerNum('ledger-other');
+            const dust = ledgerNum('ledger-dustbin');
+            const meal = ledgerNum('ledger-meal');
+
+            const lines = [
+                { label: 'Base rent (pair)', sub: pair.label, amt: base },
+                { label: 'Service charge', sub: `${LEDGER_SERVICE_POOL} ÷ ${LEDGER_HEADS} × 2 heads = ${serviceForTwo.toFixed(2)}`, amt: serviceForTwo },
+                { label: 'Wi‑Fi (fixed)', sub: 'Same for everyone · locked', amt: wifi },
+                ...(treat > 0 ? [{ label: 'Treat bill (Squad rule)', sub: 'Samiul & Lalon', amt: treat }] : []),
+                ...(food > 0 ? [{ label: 'Food maker / khala', sub: 'manual', amt: food }] : []),
+                ...(elec > 0 ? [{ label: 'Electricity', sub: 'manual', amt: elec }] : []),
+                ...(other > 0 ? [{ label: 'Other cost', sub: 'manual', amt: other }] : []),
+                ...(dust > 0 ? [{ label: 'Dustbin fee', sub: 'manual', amt: dust }] : []),
+                ...(meal > 0 ? [{ label: 'Meal bill', sub: 'manual', amt: meal }] : [])
+            ];
+
+            const total = lines.reduce((s, L) => s + L.amt, 0);
+            ledgerLastLines = lines;
+            ledgerLastTotal = total;
+
+            if (linesEl) {
+                linesEl.innerHTML = lines.map((L) => `
+                    <div class="ledger-line">
+                        <span class="text-slate-300">${L.label}<small>${L.sub || ''}</small></span>
+                        <span class="text-emerald-300 shrink-0">${ledgerFmt(L.amt)}</span>
+                    </div>
+                `).join('');
+            }
+            document.getElementById('ledger-total-bdt').textContent = ledgerFmt(total);
+            document.getElementById('ledger-total-usd').textContent = ledgerFmtUsd(total);
+
+            const prev = document.getElementById('ledger-memo-preview-wrap');
+            const pre = document.getElementById('ledger-memo-preview');
+            if (prev && pre && total > 0) {
+                prev.classList.remove('hidden');
+                pre.innerHTML = buildLedgerMemoInnerHtml(false);
+            } else if (prev) {
+                prev.classList.add('hidden');
             }
         }
+
+        function buildLedgerMemoInnerHtml(forFile) {
+            const issuer = document.getElementById('ledger-issuer')?.value || '—';
+            const a = document.getElementById('ledger-person-a')?.selectedOptions[0]?.text || '';
+            const b = document.getElementById('ledger-person-b')?.selectedOptions[0]?.text || '';
+            const now = new Date();
+            const when = now.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+            const rows = ledgerLastLines.map((L) =>
+                `<tr><td>${escapeHtml(L.label)}${L.sub ? '<br><small style=color:#64748b>' + escapeHtml(L.sub) + '</small>' : ''}</td><td>${ledgerFmt(L.amt)}</td></tr>`
+            ).join('');
+            const totalStr = ledgerFmt(ledgerLastTotal);
+            const usdStr = ledgerFmtUsd(ledgerLastTotal);
+            return `
+<div class="cash-memo-doc">
+  <h3>OCTA SQUAD — CASH MEMO</h3>
+  <div class="cash-memo-meta">
+    <strong>Issued by:</strong> ${escapeHtml(issuer)}<br>
+    <strong>Date &amp; time:</strong> ${escapeHtml(when)}<br>
+    <strong>Room pair:</strong> ${escapeHtml(a)} &amp; ${escapeHtml(b)}
+  </div>
+  <table class="cash-memo-table">${rows}</table>
+  <div class="cash-memo-total">TOTAL: ${totalStr} &nbsp;|&nbsp; ${usdStr}</div>
+  <p style="font-size:10px;color:#64748b;margin-top:12px;text-align:center;">This memo was generated from the Financial Ledger calculator. Signature: _______________</p>
+</div>`;
+        }
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function syncLedgerMemoPrintSink() {
+            const sink = document.getElementById('ledger-memo-print-root');
+            if (!sink) return;
+            sink.innerHTML = buildLedgerMemoInnerHtml(true);
+        }
+
+        function downloadLedgerMemo() {
+            if (ledgerLastTotal <= 0) {
+                alert('Select a valid pair and ensure total > 0 before download.');
+                return;
+            }
+            const issuer = document.getElementById('ledger-issuer')?.value;
+            if (!issuer) {
+                alert('Choose who is issuing the memo (Issued by).');
+                return;
+            }
+            const inner = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Cash Memo — Octa Squad</title><style>body{margin:24px;background:#f1f5f9;font-family:system-ui,sans-serif;} .cash-memo-doc{max-width:420px;margin:0 auto;}</style></head><body>' +
+                buildLedgerMemoInnerHtml(true) + '</body></html>';
+            const blob = new Blob([inner], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'octa-squad-cash-memo-' + Date.now() + '.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function printLedgerMemo() {
+            if (ledgerLastTotal <= 0) {
+                alert('Nothing to print — complete the ledger first.');
+                return;
+            }
+            const issuer = document.getElementById('ledger-issuer')?.value;
+            if (!issuer) {
+                alert('Choose who is issuing the memo (Issued by).');
+                return;
+            }
+            syncLedgerMemoPrintSink();
+            document.body.classList.add('ledger-memo-printing');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    window.print();
+                });
+            });
+        }
+
+        function payViaBkash() {
+            ledgerRecalc();
+            const amount = Math.round(ledgerLastTotal);
+            const bKashNumber = "017XXXXXXXX";
+
+            if (amount <= 0) {
+                alert('Set a valid room pair first — total must be greater than zero.');
+                return;
+            }
+
+            const paymentUrl = `https://shop.bkash.com/payment/pay?amount=${amount}&receiver=${bKashNumber}`;
+
+            if (confirm(`Transfer ৳${amount.toLocaleString('en-BD')} (ledger total) via bKash?`)) {
+                window.open(paymentUrl, '_blank', 'noopener,noreferrer');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            ledgerRecalc();
+        });
 
         /* ─── Room allocation module (embedded) ─── */
         function toggleOctaRoomPanel() {
@@ -1283,6 +1816,7 @@
         }
 
         window.addEventListener('beforeprint', () => {
+            if (document.body.classList.contains('ledger-memo-printing')) return;
             const src = document.getElementById('octa-result-screen');
             if (src && window.getComputedStyle(src).display !== 'none') {
                 octaSyncPrintSink();
@@ -1290,8 +1824,11 @@
         });
 
         window.addEventListener('afterprint', () => {
-            const sink = document.getElementById('octa-print-only-root');
-            if (sink) sink.innerHTML = '';
+            document.body.classList.remove('ledger-memo-printing');
+            const ledgerSink = document.getElementById('ledger-memo-print-root');
+            if (ledgerSink) ledgerSink.innerHTML = '';
+            const octaSink = document.getElementById('octa-print-only-root');
+            if (octaSink) octaSink.innerHTML = '';
         });
     </script>
 </body>
