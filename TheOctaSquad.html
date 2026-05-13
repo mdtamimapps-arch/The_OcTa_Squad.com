@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Octa Squad - Premium Flat Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-10px); border-color: #38bdf8; }
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="overflow-hidden">
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-6">
+        <div class="glass-card p-10 rounded-3xl w-full max-w-md border-sky-500/50 shadow-[0_0_50px_rgba(56,189,248,0.2)]">
+            <div class="text-center mb-8">
+                <i class="fas fa-user-shield text-5xl text-sky-500 mb-4"></i>
+                <h2 class="text-3xl font-bold gradient-text">Squad Access</h2>
+                <p class="text-gray-400">Authorized Personnel Only</p>
+            </div>
+            <div class="space-y-6">
+                                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Access Key</label>
+                    <input type="password" id="access-key" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-sky-500 transition-all text-sky-400 tracking-widest" placeholder="••••••••">
+                    <p class="text-[10px] text-gray-600 mt-2 italic">Hint: octasquadXXXX (The year after next)</p>
+                </div>
+
+                <button onclick="checkAccess()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-sky-900/20">
+                    Decrypt & Enter
+                </button>
+                <p id="login-error" class="text-red-500 text-xs text-center hidden">Access Denied: Invalid Authentication Key</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hacking Simulator / Loader -->
+    <div id="loader-overlay" class="fixed inset-0 z-[90] bg-black hidden flex-col items-center justify-center p-10 font-mono">
+        <div class="w-full max-w-2xl">
+            <div id="terminal-output" class="text-green-500 text-sm mb-6 h-64 overflow-hidden leading-relaxed"></div>
+            <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800">
+                <div id="progress-bar" class="bg-sky-500 h-full w-0 transition-all duration-100 ease-linear"></div>
+            </div>
+            <div class="flex justify-between mt-2">
+                <span class="text-sky-500 text-xs uppercase tracking-tighter">System Initializing...</span>
+                <span id="progress-text" class="text-sky-500 text-xs font-bold">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+
+
+    <!-- Hero Section -->
+    <header class="py-20 text-center">
+        <h1 class="text-6xl font-bold gradient-text mb-4">The Octa Squad</h1>
+        <p class="text-gray-400 text-xl">Premium Flat Life & Management System</p>
+    </header>
+
+    <!-- Squad Members Section -->
+    <section class="container mx-auto px-6 py-10">
+        <h2 class="text-3xl font-bold mb-10 text-center border-b-2 border-sky-500 w-fit mx-auto pb-2">Our Members</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <script>
+                const members = [
+                    { name: "Samiul", role: "Member", phone: "01817928308", address: "Feni, Barisāl, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/653918675_948109031501708_5385125916699200494_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZhe0N4IuceJL5KTme-1ZOxr-b747yGmXGv5vvjvIaZU2WpaeAka2mNxaAcl9wHvq8UEzzpnBirgNJ_wGNPI4A&_nc_ohc=IA5YEUGwf9EQ7kNvwHW6zkK&_nc_oc=Adrah8jd-8E8Y0RxM-64ZbvXlQ1PakOeCKqwZIWcNEMbqmJrPErvaZ4WGvTLpNnwfIA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=SnOnzZMMisK-70qeg-MsQQ&_nc_ss=7b2a8&oh=00_Af7JWym9eLlFjyxo8wqwLpYp_Cf5N9ThzeUZjCxGmBNZig&oe=6A0A2A6E" },
+                    { name: "Mehedi Hasan Uzzal", role: "Member", phone: "01721171550", address: "Noakhali, Chittagong, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/480545218_1144565723793166_1491244213710637104_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeElkGohVp_GEO5CHvAXhdX99ibcE6d_PTb2JtwTp389Nkoa0pWaKUPbm44EEddu-y3orPZHQvESBI0K2TfEr7Lx&_nc_ohc=MbwYCTvBRBIQ7kNvwEpy5Br&_nc_oc=AdpRf8IFK__jG9IGHBkh-NhvhnfRrGoSTst_T41E35_Rwi9r176WoQh18-CQ-2B8SFU&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=UDOn45Xzyknj3FB49VwZ5g&_nc_ss=7b2a8&oh=00_Af6L1xSTERqIPzu8DDJULasmV81vUWZBFNA0JAt5Oyo8EQ&oe=6A0A08FA" },
+                    { name: "Mehedi Hasan Tamim", role: "Member", phone: "01963177023 (Whatsapp)", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/490098268_4171695549821186_1644536591428218970_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGc3Vz_lKfaFJd0HWf-97PTYVDUi9VrArZhUNSL1WsCtvTsJQl2ld3x_qQNISFxQ8ldBPZ8X2DDXhvDmFg3d9Yk&_nc_ohc=xD7IoHeLPo0Q7kNvwGNJfGL&_nc_oc=Adom3a-hmbHgNM29znCY7gmCEhPuW-D_nOEHK7DfsMhC21bPa6YbEUsfc1hoj-Y5eEE&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=PhRlnkPBtoBhnY9rM5lz1w&_nc_ss=7b2a8&oh=00_Af4Dkul7w2EfYnliX5Oea01G-Mefy1g1rTkJJODnNFoD9w&oe=6A09F768" },
+                    { name: "Akash", role: "Member", phone: "01331252962", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/634026528_122094703251278363_4154357581737564418_n.jpg?stp=cp0_dst-jpg_s60x60_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEt7NLM5RzlZLDxtl90cfaT7Ho4Iy7QMGzsejgjLtAwbADCxmvVc3z5pRKSaUfKAbxFGNJx-Y2g4u0UeupQ-y7n&_nc_ohc=VBYS31PPMesQ7kNvwF2RhO4&_nc_oc=Adqep3CR66zaEekiXZZdHkpStcJU0A326-JGNxEQNei5gV6YQjqwh6_KKd5bBcJnR18&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=rd9GZeZeTg0fElVdPFWr0w&_nc_ss=7b2a8&oh=00_Af44xq8uSYJEUZb00juS0rsEcRYZGNru62-td7bkff4tvw&oe=6A0A2677" },
+                    { name: "Pranto Biswas", role: "Member", phone: "01768344230", address: "Dhaka", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pranto" },
+                    { name: "Samyy", role: "Member", phone: "01612505049", address: "Kushtia, Khulna, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/696836728_2135255480654648_9164734055409742991_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGGL5hJs0-s5ycyOX0TLYnGOrAGhSYlDZw6sAaFJiUNnF1R6cR8ORjvNiJ74jBEqp_XlD91luDeK3mdzLGkV0Pd&_nc_ohc=bAzdSgltBaIQ7kNvwHfN2lB&_nc_oc=Adr-8trfHepcVsz_TAeeHtLLZOzdSzATDRRbl_zf6UOM9NwpGl13wvPJl0_bXXNR0Hw&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=i2ewYMuIyNk38n3vm98iNA&_nc_ss=7b2a8&oh=00_Af6JE7WICIgFhYH10En2n0D7aFzM7uPBqe6w8l8jTvYJ9g&oe=6A09F8E3" },
+                    { name: "Saif Hasan", role: "Member", phone: "01753326883", address: "Nilphamary", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472847701_122138044520451718_5717908140505922533_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHsDZ_YiZjhVWCB9HMsORFQ3mD9V50tQdveYP1XnS1B261BATfFxPjeNaU6O2VkZ4QGlt4KHF5CPCROmWzhIt0K&_nc_ohc=CY_9fuHoKe8Q7kNvwGwf161&_nc_oc=AdoybMamA7dOdVVj53e-n2rSsyzLjayf7GKQtmKJMnfHa6Jle3EuIJbwPu6FIM9Urv4&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=p7mVdCOhfEjbjDweOyB9BQ&_nc_ss=7b2a8&oh=00_Af4vgSM2Hsm0QN52vC00cKU_HeSjb87ggRJrXNJubGeKFw&oe=6A0A2B85" },
+                    { name: "Shahrear Lalon", role: "Member", phone: "01767075237X", address: "Mymensingh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472144298_1155661549558567_3609989594921465096_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFEZ2cL4cIyEFhkwpPshDxmrwg7-6FzdK2vCDv7oXN0rR3njOGQHXHTZAYJuPq5rdvrGIP4rRQlA1ALmbgeguCq&_nc_ohc=h0BPJmFoxLEQ7kNvwF_LJ45&_nc_oc=Ado568uHPM3kNSKI0EcVtKd9r5otMdQDr-Qo532MIINWmDh3tpIIOwO3FyiyaJfMrwA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=VcLo6PiFZS538hBi9dKNAg&_nc_ss=7b2a8&oh=00_Af6giDS2PFwsq56rpKxzgb-evJq8hiGpn0HYOKabCwHaxg&oe=6A0A2283" }
+                ];
+
+                members.forEach(m => {
+                    document.write(`
+                        <div class="glass-card p-6 rounded-2xl text-center">
+                            <img src="${m.img}" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-sky-500 bg-slate-800" alt="${m.name}">
+                            <h3 class="text-xl font-bold">${m.name}</h3>
+                            <p class="text-sky-400 text-sm mb-2">${m.role}</p>
+                            <p class="text-gray-400 text-xs"><i class="fas fa-phone mr-1"></i> ${m.phone}</p>
+                            <p class="text-gray-400 text-xs mt-1"><i class="fas fa-map-marker-alt mr-1"></i> ${m.address}</p>
+                        </div>
+                    `);
+                });
+            </script>
+        </div>
+    </section>
+
+    <!-- Flat Details & Finance -->
+    <section class="container mx-auto px-6 py-20 bg-slate-900/50 rounded-3xl my-10 border border-slate-800">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-4xl font-bold mb-6">Flat Details & Location</h2>
+                <div class="space-y-4 text-gray-300">
+                    <p><i class="fas fa-home text-sky-500 mr-2"></i> <strong>Flat Name:</strong>unknown</p>
+                    <p><i class="fas fa-user-shield text-sky-500 mr-2"></i> <strong>Caretaker:</strong> Md Usman vai (018XXXXXXXX)</p>
+                    <p><i class="fas fa-map-signs text-sky-500 mr-2"></i> <strong>Address:</strong> V899+J29, Khagan(Near DIU)</p>
+                </div>
+                
+                                                <div class="mt-8 rounded-xl overflow-hidden border border-gray-700 shadow-2xl h-[300px]">
+                                                    <iframe 
+                                                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1576.2891965997232!2d90.3175225!3d23.8690332!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c2005c6f6637%3A0xe5452d37c0f1624b!2zMjPCsDUyJzA4LjUiTiA5MMKwMTknMDMuMSJF!5e1!3m2!1sen!2sbd!4v1740209633393!5m2!1sen!2sbd"
+                                                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                                    </iframe>
+                                                    <div class="bg-slate-800 p-2 text-center">
+                                                        <a href="https://maps.app.goo.gl/qWzSqStLrXkqAyyT8" target="_blank" class="text-sky-400 text-sm hover:underline">
+                                                            <i class="fas fa-external-link-alt mr-1"></i> Open in Google Maps
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+
+
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl border-sky-500/30">
+                <h2 class="text-3xl font-bold mb-6 text-center">Monthly Cost (Per Person)</h2>
+                <ul class="space-y-4 text-lg">
+                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Flat Rent</span> <span class="text-sky-400">৳5,000</span></li>
+                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Utility (Gas/Water/Current)</span> <span class="text-sky-400">৳1,200</span></li>
+                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Wifi & Others</span> <span class="text-sky-400">৳300</span></li>
+                    <li class="flex justify-between font-bold text-xl pt-4"><span>Total Bill</span> <span class="text-green-400">৳6,500</span></li>
+                </ul>
+
+                <div class="mt-10">
+                    <button onclick="payViaBkash()" class="w-full bg-[#D12053] hover:bg-[#A11940] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg">
+                        <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg" class="w-8 h-8" alt="bKash"> Pay via bKash
+                    </button>
+                    <p class="text-[10px] text-center text-gray-500 mt-2 uppercase tracking-widest">Powered by Octa Squad Finance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-10 text-gray-500 border-t border-gray-800">
+        <p>&copy; 2024 The Octa Squad | Excellence in Unity</p>
+    </footer>
+
+        </div> <!-- End Main Content -->
+
+    <script>
+        // Password Protection
+                function checkAccess() {
+            const key = document.getElementById('access-key').value;
+            const correctKey = "octasquad2026"; // Updated password
+
+            
+            if(key === correctKey) {
+                document.getElementById('login-overlay').classList.add('hidden');
+                startLoading();
+            } else {
+                const error = document.getElementById('login-error');
+                error.classList.remove('hidden');
+                setTimeout(() => error.classList.add('hidden'), 2000);
+            }
+        }
+
+        // Hacking Simulator Loader
+        function startLoading() {
+            const loader = document.getElementById('loader-overlay');
+            const terminal = document.getElementById('terminal-output');
+            const bar = document.getElementById('progress-bar');
+            const text = document.getElementById('progress-text');
+            const main = document.getElementById('main-content');
+            
+            loader.classList.remove('hidden');
+            
+            const logs = [
+                "> INITIALIZING SYSTEM BOOT...",
+                "> CONNECTING TO SQUAD ENCRYPTED NETWORK...",
+                "> DECRYPTING MEMBER DATA [Samiul, Uzzal, Tamim...]",
+                "> FETCHING LOCATION: DOTTOPARA (V899+J29)...",
+                "> CALCULATING MONTHLY BUDGET: ৳6,500...",
+                "> BYPASSING SECURITY PROTOCOLS...",
+                "> ACCESSING FINANCIAL GATEWAYS...",
+                "> SYNCHRONIZING BKASH API...",
+                "> SYSTEM READY: WELCOME TO THE OCTA SQUAD."
+            ];
+
+            let logIndex = 0;
+            const logInterval = setInterval(() => {
+                if(logIndex < logs.length) {
+                    const line = document.createElement('div');
+                    line.textContent = logs[logIndex];
+                    terminal.appendChild(line);
+                    terminal.scrollTop = terminal.scrollHeight;
+                    logIndex++;
+                } else {
+                    clearInterval(logInterval);
+                }
+            }, 500);
+
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 1;
+                bar.style.width = progress + "%";
+                text.textContent = progress + "%";
+                
+                if(progress >= 100) {
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        main.classList.remove('hidden');
+                        setTimeout(() => {
+                            main.classList.add('opacity-100');
+                            document.body.classList.remove('overflow-hidden');
+                        }, 100);
+                    }, 500);
+                }
+            }, 50); // Total 5 seconds (50ms * 100)
+        }
+
+        function payViaBkash() {
+
+            const amount = 6500;
+            const bKashNumber = "017XXXXXXXX"; // replace with real number
+            const paymentUrl = `https://shop.bkash.com/payment/pay?amount=${amount}&receiver=${bKashNumber}`;
+            
+            if(confirm("Are you sure you want to pay ৳6,500?")) {
+                window.location.href = paymentUrl;
+            }
+        }
+    </script>
+</body>
+</html>
