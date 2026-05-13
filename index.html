@@ -175,6 +175,266 @@
             border-radius: 5px;
             border: 1px solid #38bdf8;
         }
+
+        /* ─── The Octa Team · Room selection launcher (RGB) ─── */
+        .octa-rgb-launcher {
+            position: relative;
+            border-radius: 1.5rem;
+            padding: 3px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400% 400%;
+            animation: octa-rgb-spin 8s linear infinite;
+            box-shadow:
+                0 0 40px rgba(0, 242, 255, 0.35),
+                0 0 80px rgba(255, 0, 234, 0.18),
+                0 0 120px rgba(0, 255, 136, 0.08);
+        }
+
+        .octa-rgb-launcher::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: inherit;
+            background: inherit;
+            background-size: inherit;
+            animation: inherit;
+            filter: blur(14px);
+            opacity: 0.45;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes octa-rgb-spin {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .octa-rgb-launcher-inner {
+            border-radius: calc(1.5rem - 3px);
+            background: linear-gradient(165deg, rgba(12, 24, 48, 0.98), rgba(3, 6, 16, 0.99));
+            padding: 1.35rem 1.35rem 1.5rem;
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .octa-launcher-btn {
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(145deg, rgba(0, 242, 255, 0.14), rgba(255, 0, 234, 0.1), rgba(0, 255, 136, 0.06));
+            border: 1px solid rgba(0, 242, 255, 0.4);
+            border-radius: 1rem;
+            padding: 1.35rem 1.1rem 1.2rem;
+            cursor: pointer;
+            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+
+        .octa-launcher-btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: rgba(0, 255, 136, 0.55);
+            box-shadow:
+                0 0 36px rgba(0, 242, 255, 0.35),
+                0 0 56px rgba(255, 0, 234, 0.12),
+                inset 0 0 24px rgba(0, 242, 255, 0.06);
+        }
+
+        .octa-launcher-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #e0f2fe;
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.45);
+        }
+
+        .octa-launcher-squad {
+            margin-top: 0.35rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: clamp(1.35rem, 4vw, 1.85rem);
+            font-weight: 800;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #00f2ff, #a78bfa, #ff00ea, #00ff88, #00f2ff);
+            background-size: 220% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: octa-title-shine 3.5s linear infinite;
+        }
+
+        @keyframes octa-title-shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .octa-launcher-sub {
+            margin-top: 0.45rem;
+            font-size: 0.72rem;
+            color: rgba(186, 230, 253, 0.88);
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .octa-launcher-divider {
+            width: 48px;
+            height: 2px;
+            margin: 0.85rem auto 0;
+            border-radius: 2px;
+            background: linear-gradient(90deg, transparent, #00f2ff, #ff00ea, transparent);
+            opacity: 0.85;
+        }
+
+        .octa-launcher-hint {
+            margin-top: 0.85rem;
+            font-size: 0.68rem;
+            color: rgba(56, 189, 248, 0.85);
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 0.12em;
+        }
+
+        /* Room module (embedded) — scoped variables */
+        .octa-room-scope {
+            --octa-r-primary: #00f2ff;
+            --octa-r-secondary: #00ff88;
+            --octa-r-accent: #ff00ea;
+        }
+
+        .octa-room-scope .octa-room-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 40%, #1a1a2e 0%, #000 100%);
+            border-radius: 1.25rem;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .octa-room-scope .octa-room-shell {
+            position: relative;
+            z-index: 1;
+            padding: 1.75rem;
+            border-radius: 1.25rem;
+            border: 2px solid var(--octa-r-primary);
+            box-shadow: 0 0 24px rgba(0, 242, 255, 0.25), inset 0 0 20px rgba(0, 242, 255, 0.06);
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+        }
+
+        .octa-room-scope .octa-room-h1 {
+            font-size: 1.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: 1rem;
+            color: var(--octa-r-primary);
+            text-shadow: 0 0 12px var(--octa-r-primary);
+            animation: octa-room-glow 2s infinite alternate;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        @keyframes octa-room-glow {
+            from {
+                text-shadow: 0 0 10px var(--octa-r-primary);
+            }
+
+            to {
+                text-shadow: 0 0 20px var(--octa-r-accent), 0 0 28px var(--octa-r-accent);
+            }
+        }
+
+        .octa-room-scope .octa-room-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .octa-room-scope .octa-name-btn {
+            padding: 14px 10px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--octa-r-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.25s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .octa-room-scope .octa-name-btn:hover {
+            background: var(--octa-r-secondary);
+            color: #000;
+            box-shadow: 0 0 16px var(--octa-r-secondary);
+        }
+
+        .octa-room-scope #octa-result-screen {
+            display: none;
+            padding: 1.25rem;
+            border: 4px double var(--octa-r-secondary);
+            position: relative;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            border-radius: 0.5rem;
+        }
+
+        .octa-room-scope .octa-cert-title {
+            color: var(--octa-r-accent);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .octa-room-scope .octa-room-info {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .octa-room-scope .octa-price-tag {
+            font-size: 1.25rem;
+            color: #ffcc00;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+
+        .octa-room-scope .octa-print-btn {
+            margin-top: 12px;
+            margin-right: 8px;
+            padding: 10px 20px;
+            background: var(--octa-r-accent);
+            border: none;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .octa-room-scope .octa-print-btn.octa-muted {
+            background: #555;
+        }
+
+        .octa-room-scope #octa-loading {
+            display: none;
+            font-style: italic;
+            color: var(--octa-r-primary);
+            margin: 16px 0;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        @media (max-width: 480px) {
+            .octa-room-scope .octa-room-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -410,6 +670,61 @@
             </div>
         </section>
 
+        <!-- The Octa Team · SQUAD_ · Room selection (premium RGB → tap opens module below) -->
+        <section class="container mx-auto px-6 pt-4 pb-12 relative z-10" id="octa-room-section">
+            <p class="text-center text-sky-500/55 font-mono text-[10px] uppercase tracking-[0.45em] mb-6">&gt; Squad
+                module · lower deck</p>
+            <div class="octa-rgb-launcher max-w-xl mx-auto">
+                <div class="octa-rgb-launcher-inner">
+                    <button type="button" class="octa-launcher-btn" onclick="toggleOctaRoomPanel()"
+                        aria-expanded="false" id="octa-room-toggle-btn">
+                        <div class="octa-launcher-title">The Octa Team</div>
+                        <div class="octa-launcher-squad">SQUAD_</div>
+                        <div class="octa-launcher-sub">Room selection</div>
+                        <div class="octa-launcher-divider" aria-hidden="true"></div>
+                        <div class="octa-launcher-hint" id="octa-room-toggle-hint">▼ Tap — module opens below</div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="octa-room-panel" class="hidden max-w-xl mx-auto mt-10 octa-room-scope relative overflow-hidden"
+                aria-hidden="true">
+                <div class="octa-room-bg"></div>
+                <div class="octa-room-shell relative z-[1]">
+                    <div id="octa-selection-screen">
+                        <h1 class="octa-room-h1 text-center">Room selection<br><small
+                                style="font-size:0.48em; letter-spacing:0.12em;">The Octa Squad</small></h1>
+                        <p class="text-center text-slate-400 text-sm mb-6 font-mono px-2">Choose your identity to
+                            allocate room</p>
+                        <div class="octa-room-grid">
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('SAMIUL')">Samiul</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('MAHEDI')">Mahedi</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('TAMIM')">Tamim</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('SAIF')">Saif</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('PRANTO')">Pranto</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('AKASH')">Akash</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('SAMMO')">Sammo</button>
+                            <button type="button" class="octa-name-btn" onclick="octaSelectRoom('LALON')">Lalon</button>
+                        </div>
+                    </div>
+                    <div id="octa-loading" class="text-center">System analyzing rooms… Please wait…</div>
+                    <div id="octa-result-screen">
+                        <div class="octa-cert-title text-center uppercase tracking-widest">Official room allocation</div>
+                        <hr style="border: 1px solid var(--octa-r-primary); opacity: 0.6;">
+                        <div id="octa-output-content" class="octa-room-info"></div>
+                        <div id="octa-output-price" class="octa-price-tag"></div>
+                        <p class="text-xs text-slate-500 text-center mt-4">Print this copy before entering the room (if
+                            your squad still uses paper lore).</p>
+                        <div class="text-center">
+                            <button type="button" class="octa-print-btn" onclick="window.print()">Print
+                                certificate</button>
+                            <button type="button" class="octa-print-btn octa-muted" onclick="octaRoomReroll()">Re-roll</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="text-center py-10 text-sky-500/30 border-t border-sky-900/30 font-mono text-sm">
             <p>> END OF LINE &copy; 2024 THE OCTA SQUAD_</p>
@@ -529,9 +844,9 @@
                 gmail: "UPDATE_HERE@gmail.com",
                 telegram: "UPDATE_HERE",
                 whatsapp: "01767075237",
-                facebook: "https://www.facebook.com/shahariar.lalon"
-                room: "(এটাচ বাথরুম+ বেলকনি) ভাড়া ২৫৫০"
-                রুমমেট: "সামিউল"
+                facebook: "https://www.facebook.com/shahariar.lalon",
+                room: "(এটাচ বাথরুম+ বেলকনি) ভাড়া ২৫৫০",
+                roommate: "সামিউল"
             }
         ];
 
@@ -687,7 +1002,10 @@
 
         // Close modals on escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModals();
+            if (e.key === 'Escape') {
+                closeModals();
+                closeOctaRoomPanel();
+            }
         });
 
 
@@ -774,6 +1092,78 @@
             if (confirm("AUTHORIZATION REQUIRED: Transfer ৳6,500 to Base Command?")) {
                 window.location.href = paymentUrl;
             }
+        }
+
+        /* ─── Room allocation module (embedded) ─── */
+        function toggleOctaRoomPanel() {
+            const panel = document.getElementById('octa-room-panel');
+            const hint = document.getElementById('octa-room-toggle-hint');
+            const btn = document.getElementById('octa-room-toggle-btn');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.setAttribute('aria-hidden', 'false');
+                btn.setAttribute('aria-expanded', 'true');
+                hint.textContent = '▲ Tap again — close module';
+                setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+            } else {
+                panel.classList.add('hidden');
+                panel.setAttribute('aria-hidden', 'true');
+                btn.setAttribute('aria-expanded', 'false');
+                hint.textContent = '▼ Tap — module opens below';
+                octaRoomReroll();
+            }
+        }
+
+        function closeOctaRoomPanel() {
+            const panel = document.getElementById('octa-room-panel');
+            if (!panel || panel.classList.contains('hidden')) return;
+            panel.classList.add('hidden');
+            panel.setAttribute('aria-hidden', 'true');
+            const btn = document.getElementById('octa-room-toggle-btn');
+            const hint = document.getElementById('octa-room-toggle-hint');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            if (hint) hint.textContent = '▼ Tap — module opens below';
+            octaRoomReroll();
+        }
+
+        function octaRoomReroll() {
+            const sel = document.getElementById('octa-selection-screen');
+            const load = document.getElementById('octa-loading');
+            const res = document.getElementById('octa-result-screen');
+            if (sel) sel.style.display = 'block';
+            if (load) load.style.display = 'none';
+            if (res) res.style.display = 'none';
+            const c = document.getElementById('octa-output-content');
+            const p = document.getElementById('octa-output-price');
+            if (c) c.innerHTML = '';
+            if (p) p.innerHTML = '';
+        }
+
+        function octaSelectRoom(name) {
+            document.getElementById('octa-selection-screen').style.display = 'none';
+            document.getElementById('octa-loading').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('octa-loading').style.display = 'none';
+                document.getElementById('octa-result-screen').style.display = 'block';
+
+                const content = document.getElementById('octa-output-content');
+                const price = document.getElementById('octa-output-price');
+
+                if (name === 'TAMIM' || name === 'SAMMO') {
+                    content.innerHTML = `Congratulations <b>${name}</b>!<br>You have got the basic room.<br>Details: Without Bathroom & Without Balcony. Just a peaceful room for you.`;
+                    price.innerHTML = 'RENT: 2500 BDT / Month';
+                } else if (name === 'MAHEDI' || name === 'SAIF') {
+                    content.innerHTML = `Congratulations <b>${name}</b>!<br>You have secured a premium spot.<br>Details: With Attached Bathroom, Without Balcony. Enjoy the fresh air!`;
+                    price.innerHTML = 'RENT: $2550 (Equivalent) / Month';
+                } else if (name === 'LALON' || name === 'SAMIUL') {
+                    content.innerHTML = `Congratulations <b>${name}</b>!<br>You have won the <b>ELITE ROOM</b>!<br>Details: Attached Bathroom + Private Balcony. Best room in the house!<br><br><span style="color:var(--octa-r-secondary)">SPECIAL RULE: Other members of the OCTA SQUAD must receive a treat from you every month!</span>`;
+                    price.innerHTML = 'RENT: 2550 KWD / Month';
+                } else if (name === 'PRANTO' || name === 'AKASH') {
+                    content.innerHTML = `Congratulations <b>${name}</b>!<br>You guys are incredibly lucky! You got the <b>1st Room (Dining Hall Master)</b>.<br>Remember: If you do not give permission, the other 6 members cannot enter their rooms! You are the BarirWala.`;
+                    price.innerHTML = 'RENT: 2400 REAL / Month';
+                }
+            }, 2000);
         }
     </script>
 </body>
