@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +9,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #050b14; color: white; }
-        h1, h2, h3, h4, .font-mono { font-family: 'Share Tech Mono', monospace; }
-        
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #050b14;
+            color: white;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-mono {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
         .glass-card {
             background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(56, 189, 248, 0.2);
             transition: transform 0.3s ease;
         }
-        .glass-card:hover { border-color: #38bdf8; }
-        
+
+        .glass-card:hover {
+            border-color: #38bdf8;
+        }
+
         .gradient-text {
             background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
             -webkit-background-clip: text;
@@ -34,27 +50,37 @@
             padding: 2rem 1rem;
             scroll-behavior: smooth;
         }
+
         .slider-container::-webkit-scrollbar {
             height: 8px;
         }
+
         .slider-container::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 4px;
         }
+
         .slider-container::-webkit-scrollbar-thumb {
             background: #38bdf8;
             border-radius: 4px;
             box-shadow: 0 0 10px #38bdf8;
         }
+
         .slider-item {
             scroll-snap-align: center;
             flex: 0 0 100%;
         }
+
         @media (min-width: 768px) {
-            .slider-item { flex: 0 0 70%; }
+            .slider-item {
+                flex: 0 0 70%;
+            }
         }
+
         @media (min-width: 1024px) {
-            .slider-item { flex: 0 0 45%; }
+            .slider-item {
+                flex: 0 0 45%;
+            }
         }
 
         /* RGB Border Effects */
@@ -64,10 +90,14 @@
             border-radius: 1.5rem;
             z-index: 1;
         }
+
         .rgb-box::before {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
             background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
             z-index: -1;
             border-radius: 1.6rem;
@@ -75,14 +105,24 @@
             animation: rgb-glow 20s linear infinite;
             opacity: 0.6;
         }
+
         .rgb-box:hover::before {
             opacity: 1;
             filter: blur(8px);
         }
+
         @keyframes rgb-glow {
-            0% { background-position: 0 0; }
-            50% { background-position: 400% 0; }
-            100% { background-position: 0 0; }
+            0% {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 400% 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
         }
 
         /* Image zoom */
@@ -92,19 +132,22 @@
             cursor: pointer;
             position: relative;
         }
+
         .img-zoom-container img {
             transition: transform 0.5s ease;
         }
+
         .img-zoom-container:hover img {
             transform: scale(1.15);
         }
+
         .img-zoom-container::after {
             content: '\f00e';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -113,30 +156,53 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .img-zoom-container:hover::after {
             opacity: 1;
         }
 
         /* Custom Scrollbar for body */
-        body::-webkit-scrollbar { width: 10px; }
-        body::-webkit-scrollbar-track { background: #050b14; }
-        body::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 5px; border: 1px solid #38bdf8; }
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #050b14;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 5px;
+            border: 1px solid #38bdf8;
+        }
     </style>
 </head>
+
 <body class="overflow-hidden">
 
     <!-- Image Modal -->
-    <div id="image-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()">
-        <div class="relative transform scale-50 transition-transform duration-300" id="image-modal-content" onclick="event.stopPropagation()">
-            <img id="modal-img" src="" class="max-w-[90vw] max-h-[90vh] rounded-2xl border-4 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.5)] object-contain">
-            <button onclick="closeModals()" class="absolute -top-10 right-0 text-gray-400 hover:text-red-500 text-3xl transition-colors"><i class="fas fa-times-circle"></i></button>
+    <div id="image-modal"
+        class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm"
+        onclick="closeModals()">
+        <div class="relative transform scale-50 transition-transform duration-300" id="image-modal-content"
+            onclick="event.stopPropagation()">
+            <img id="modal-img" src=""
+                class="max-w-[90vw] max-h-[90vh] rounded-2xl border-4 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.5)] object-contain">
+            <button onclick="closeModals()"
+                class="absolute -top-10 right-0 text-gray-400 hover:text-red-500 text-3xl transition-colors"><i
+                    class="fas fa-times-circle"></i></button>
         </div>
     </div>
 
     <!-- Details Modal -->
-    <div id="details-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()">
-        <div class="relative transform scale-50 transition-transform duration-300 w-full max-w-2xl bg-slate-900/90 rounded-3xl p-8 border-2 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.3)] backdrop-blur-md" id="details-modal-content" onclick="event.stopPropagation()">
-            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl transition-colors"><i class="fas fa-times"></i></button>
+    <div id="details-modal"
+        class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm"
+        onclick="closeModals()">
+        <div class="relative transform scale-50 transition-transform duration-300 w-full max-w-2xl bg-slate-900/90 rounded-3xl p-8 border-2 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.3)] backdrop-blur-md"
+            id="details-modal-content" onclick="event.stopPropagation()">
+            <button onclick="closeModals()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl transition-colors"><i
+                    class="fas fa-times"></i></button>
             <div id="modal-details-container" class="flex flex-col md:flex-row gap-8 items-center md:items-start">
                 <!-- Populated by JS -->
             </div>
@@ -144,8 +210,10 @@
     </div>
 
     <!-- Login Overlay -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-[#050b14] flex items-center justify-center p-6 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-[#050b14]">
-        <div class="glass-card p-10 rounded-3xl w-full max-w-md border-sky-500/50 shadow-[0_0_50px_rgba(56,189,248,0.2)] relative overflow-hidden">
+    <div id="login-overlay"
+        class="fixed inset-0 z-[100] bg-[#050b14] flex items-center justify-center p-6 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-[#050b14]">
+        <div
+            class="glass-card p-10 rounded-3xl w-full max-w-md border-sky-500/50 shadow-[0_0_50px_rgba(56,189,248,0.2)] relative overflow-hidden">
             <div class="absolute inset-0 bg-sky-500/5 blur-[100px]"></div>
             <div class="text-center mb-8 relative z-10">
                 <i class="fas fa-user-ninja text-5xl text-sky-500 mb-4 animate-pulse"></i>
@@ -154,30 +222,47 @@
             </div>
             <div class="space-y-6 relative z-10">
                 <div>
-                    <label class="block text-xs uppercase tracking-widest text-sky-500/70 mb-2 font-mono">Decryption Key</label>
-                    <input type="password" id="access-key" class="w-full bg-black/50 border border-sky-900 rounded-xl px-4 py-3 focus:outline-none focus:border-sky-400 transition-all text-sky-400 tracking-widest font-mono shadow-[inset_0_0_10px_rgba(56,189,248,0.1)]" placeholder="••••••••">
-                    <p class="text-[10px] text-gray-500 mt-2 italic font-mono">> Hint: octasquadXXXX (The year after next)</p>
+                    <label class="block text-xs uppercase tracking-widest text-sky-500/70 mb-2 font-mono">Decryption
+                        Key</label>
+                    <input type="password" id="access-key"
+                        class="w-full bg-black/50 border border-sky-900 rounded-xl px-4 py-3 focus:outline-none focus:border-sky-400 transition-all text-sky-400 tracking-widest font-mono shadow-[inset_0_0_10px_rgba(56,189,248,0.1)]"
+                        placeholder="••••••••">
+                    <p class="text-[10px] text-gray-500 mt-2 italic font-mono">> Hint: octasquadXXXX (The year after
+                        next)</p>
                 </div>
 
-                <button onclick="checkAccess()" class="w-full bg-sky-600/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 font-bold py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] font-mono uppercase tracking-widest">
+                <button onclick="checkAccess()"
+                    class="w-full bg-sky-600/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 font-bold py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] font-mono uppercase tracking-widest">
                     <i class="fas fa-unlock-alt mr-2"></i> Initialize
                 </button>
-                <p id="login-error" class="text-red-500 text-xs text-center hidden font-mono bg-red-500/10 py-2 rounded border border-red-500/30 animate-bounce">ACCESS DENIED: INVALID KEY</p>
+                <p id="login-error"
+                    class="text-red-500 text-xs text-center hidden font-mono bg-red-500/10 py-2 rounded border border-red-500/30 animate-bounce">
+                    ACCESS DENIED: INVALID KEY</p>
             </div>
         </div>
     </div>
 
     <!-- Hacking Simulator / Loader -->
-    <div id="loader-overlay" class="fixed inset-0 z-[90] bg-[#02050a] hidden flex-col items-center justify-center p-10 font-mono relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #38bdf8 2px, #38bdf8 4px); background-size: 100% 4px;"></div>
+    <div id="loader-overlay"
+        class="fixed inset-0 z-[90] bg-[#02050a] hidden flex-col items-center justify-center p-10 font-mono relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10"
+            style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #38bdf8 2px, #38bdf8 4px); background-size: 100% 4px;">
+        </div>
         <div class="w-full max-w-2xl relative z-10">
-            <div id="terminal-output" class="text-sky-400 text-sm mb-6 h-64 overflow-hidden leading-relaxed drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]"></div>
-            <div class="w-full bg-black h-2 rounded-full overflow-hidden border border-sky-900 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
-                <div id="progress-bar" class="bg-sky-400 h-full w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(56,189,248,1)]"></div>
+            <div id="terminal-output"
+                class="text-sky-400 text-sm mb-6 h-64 overflow-hidden leading-relaxed drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]">
+            </div>
+            <div
+                class="w-full bg-black h-2 rounded-full overflow-hidden border border-sky-900 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
+                <div id="progress-bar"
+                    class="bg-sky-400 h-full w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(56,189,248,1)]">
+                </div>
             </div>
             <div class="flex justify-between mt-3">
-                <span class="text-sky-500/80 text-xs uppercase tracking-widest animate-pulse">Establishing Secure Connection...</span>
-                <span id="progress-text" class="text-sky-400 text-xs font-bold drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]">0%</span>
+                <span class="text-sky-500/80 text-xs uppercase tracking-widest animate-pulse">Establishing Secure
+                    Connection...</span>
+                <span id="progress-text"
+                    class="text-sky-400 text-xs font-bold drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]">0%</span>
             </div>
         </div>
     </div>
@@ -185,19 +270,27 @@
     <!-- Main Content (Hidden initially) -->
     <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000 relative">
         <!-- Background Grid Effect -->
-        <div class="fixed inset-0 z-[-1] opacity-5 pointer-events-none" style="background-image: linear-gradient(#38bdf8 1px, transparent 1px), linear-gradient(90deg, #38bdf8 1px, transparent 1px); background-size: 30px 30px;"></div>
+        <div class="fixed inset-0 z-[-1] opacity-5 pointer-events-none"
+            style="background-image: linear-gradient(#38bdf8 1px, transparent 1px), linear-gradient(90deg, #38bdf8 1px, transparent 1px); background-size: 30px 30px;">
+        </div>
 
         <!-- Hero Section -->
         <header class="pt-24 pb-12 text-center relative">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-500/20 blur-[100px] rounded-full z-[-1]"></div>
-            <h1 class="text-5xl md:text-7xl font-bold gradient-text mb-4 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(56,189,248,0.4)]">The Octa Squad</h1>
-            <p class="text-sky-400/80 font-mono text-lg tracking-widest uppercase"><i class="fas fa-network-wired mr-2"></i>Premium Management Protocol</p>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-500/20 blur-[100px] rounded-full z-[-1]">
+            </div>
+            <h1
+                class="text-5xl md:text-7xl font-bold gradient-text mb-4 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(56,189,248,0.4)]">
+                The Octa Squad</h1>
+            <p class="text-sky-400/80 font-mono text-lg tracking-widest uppercase"><i
+                    class="fas fa-network-wired mr-2"></i>Premium Management Protocol</p>
         </header>
 
         <!-- Squad Members Slider Section -->
         <section class="w-full py-10 relative">
-            <h2 class="text-3xl font-bold mb-10 text-center text-white font-mono uppercase tracking-widest"><span class="text-sky-500">></span> Active Operatives</h2>
-            
+            <h2 class="text-3xl font-bold mb-10 text-center text-white font-mono uppercase tracking-widest"><span
+                    class="text-sky-500">></span> Active Operatives</h2>
+
             <div class="slider-container px-4 md:px-20" id="members-slider">
                 <!-- Slider items generated by JS -->
             </div>
@@ -207,77 +300,108 @@
         <section class="container mx-auto px-6 py-20 relative z-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div class="glass-card p-8 rounded-3xl border-sky-500/30 relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 text-9xl text-sky-500/5"><i class="fas fa-map-marked-alt"></i></div>
-                    <h2 class="text-3xl font-bold mb-6 font-mono uppercase text-sky-400 border-b border-sky-500/30 pb-4">> Base Coordinates</h2>
+                    <div class="absolute -right-10 -top-10 text-9xl text-sky-500/5"><i
+                            class="fas fa-map-marked-alt"></i></div>
+                    <h2
+                        class="text-3xl font-bold mb-6 font-mono uppercase text-sky-400 border-b border-sky-500/30 pb-4">
+                        > Base Coordinates</h2>
                     <div class="space-y-6 text-gray-300 font-mono">
-                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-building"></i></div>
+                        <div
+                            class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div
+                                class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl">
+                                <i class="fas fa-building"></i></div>
                             <div>
                                 <p class="text-xs text-sky-500/70 uppercase">Designation</p>
                                 <p class="text-lg text-white">Unknown Entity</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-user-shield"></i></div>
+                        <div
+                            class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div
+                                class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl">
+                                <i class="fas fa-user-shield"></i></div>
                             <div>
                                 <p class="text-xs text-sky-500/70 uppercase">Commander</p>
-                                <p class="text-lg text-white">Md Usman Vai <span class="text-sm text-gray-500">(018XXXXXXXX)</span></p>
+                                <p class="text-lg text-white">Md Usman Vai <span
+                                        class="text-sm text-gray-500">(018XXXXXXXX)</span></p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-crosshairs"></i></div>
+                        <div
+                            class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div
+                                class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl">
+                                <i class="fas fa-crosshairs"></i></div>
                             <div>
                                 <p class="text-xs text-sky-500/70 uppercase">Location</p>
-                                <p class="text-lg text-white">V899+J29, Khagan <span class="text-sm text-gray-500">(Near DIU)</span></p>
+                                <p class="text-lg text-white">V899+J29, Khagan <span class="text-sm text-gray-500">(Near
+                                        DIU)</span></p>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="mt-8 rounded-xl overflow-hidden border-2 border-sky-500/30 shadow-[0_0_20px_rgba(56,189,248,0.15)] h-[250px] relative group">
-                        <div class="absolute inset-0 bg-sky-500/10 pointer-events-none group-hover:bg-transparent transition-colors"></div>
-                        <iframe 
+
+                    <div
+                        class="mt-8 rounded-xl overflow-hidden border-2 border-sky-500/30 shadow-[0_0_20px_rgba(56,189,248,0.15)] h-[250px] relative group">
+                        <div
+                            class="absolute inset-0 bg-sky-500/10 pointer-events-none group-hover:bg-transparent transition-colors">
+                        </div>
+                        <iframe
                             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1576.2891965997232!2d90.3175225!3d23.8690332!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c2005c6f6637%3A0xe5452d37c0f1624b!2zMjPCsDUyJzA4LjUiTiA5MMKwMTknMDMuMSJF!5e1!3m2!1sen!2sbd!4v1740209633393!5m2!1sen!2sbd"
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
-                        <div class="absolute bottom-0 w-full bg-black/80 backdrop-blur p-2 text-center border-t border-sky-500/50 transform translate-y-full group-hover:translate-y-0 transition-transform">
-                            <a href="https://maps.app.goo.gl/qWzSqStLrXkqAyyT8" target="_blank" class="text-sky-400 text-sm font-mono hover:text-white transition-colors">
+                        <div
+                            class="absolute bottom-0 w-full bg-black/80 backdrop-blur p-2 text-center border-t border-sky-500/50 transform translate-y-full group-hover:translate-y-0 transition-transform">
+                            <a href="https://maps.app.goo.gl/qWzSqStLrXkqAyyT8" target="_blank"
+                                class="text-sky-400 text-sm font-mono hover:text-white transition-colors">
                                 <i class="fas fa-satellite-dish mr-2 animate-pulse"></i> Open Satellite Uplink
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card p-10 rounded-3xl border-sky-500/50 shadow-[0_0_40px_rgba(56,189,248,0.1)] relative">
+                <div
+                    class="glass-card p-10 rounded-3xl border-sky-500/50 shadow-[0_0_40px_rgba(56,189,248,0.1)] relative">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-[50px] rounded-full"></div>
-                    <h2 class="text-3xl font-bold mb-8 text-center font-mono uppercase text-sky-400">> Financial Ledger</h2>
-                    
+                    <h2 class="text-3xl font-bold mb-8 text-center font-mono uppercase text-sky-400">> Financial Ledger
+                    </h2>
+
                     <div class="bg-black/50 p-6 rounded-2xl border border-sky-900/50 mb-8 font-mono">
                         <ul class="space-y-4 text-sm md:text-base">
-                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-home w-6 text-sky-500/50"></i> Base Rent</span> 
+                            <li
+                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-home w-6 text-sky-500/50"></i> Base
+                                    Rent</span>
                                 <span class="text-white">৳5,000</span>
                             </li>
-                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-bolt w-6 text-sky-500/50"></i> Energy/Water</span> 
+                            <li
+                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-bolt w-6 text-sky-500/50"></i>
+                                    Energy/Water</span>
                                 <span class="text-white">৳1,200</span>
                             </li>
-                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
-                                <span class="text-gray-400"><i class="fas fa-wifi w-6 text-sky-500/50"></i> Network</span> 
+                            <li
+                                class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-wifi w-6 text-sky-500/50"></i>
+                                    Network</span>
                                 <span class="text-white">৳300</span>
                             </li>
                             <li class="flex justify-between font-bold text-xl pt-4">
-                                <span class="text-sky-400 uppercase tracking-widest">Total Req</span> 
+                                <span class="text-sky-400 uppercase tracking-widest">Total Req</span>
                                 <span class="text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]">৳6,500</span>
                             </li>
                         </ul>
                     </div>
 
                     <div class="mt-6">
-                        <button onclick="payViaBkash()" class="w-full bg-gradient-to-r from-[#D12053] to-[#e8376d] hover:from-[#A11940] hover:to-[#D12053] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(209,32,83,0.4)] hover:shadow-[0_0_30px_rgba(209,32,83,0.6)] group">
-                            <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg" class="w-8 h-8 group-hover:scale-110 transition-transform" alt="bKash"> 
+                        <button onclick="payViaBkash()"
+                            class="w-full bg-gradient-to-r from-[#D12053] to-[#e8376d] hover:from-[#A11940] hover:to-[#D12053] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(209,32,83,0.4)] hover:shadow-[0_0_30px_rgba(209,32,83,0.6)] group">
+                            <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg"
+                                class="w-8 h-8 group-hover:scale-110 transition-transform" alt="bKash">
                             <span class="uppercase tracking-widest font-mono">Transfer Funds</span>
                         </button>
-                        <p class="text-[10px] text-center text-sky-500/50 mt-4 uppercase tracking-widest font-mono"><i class="fas fa-lock mr-1"></i> Secured by Octa Squad Crypto-Net</p>
+                        <p class="text-[10px] text-center text-sky-500/50 mt-4 uppercase tracking-widest font-mono"><i
+                                class="fas fa-lock mr-1"></i> Secured by Octa Squad Crypto-Net</p>
                     </div>
                 </div>
             </div>
@@ -300,6 +424,100 @@
             { name: "Samyy", role: "Operative", phone: "01612505049", address: "Kushtia, Khulna", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/696836728_2135255480654648_9164734055409742991_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGGL5hJs0-s5ycyOX0TLYnGOrAGhSYlDZw6sAaFJiUNnF1R6cR8ORjvNiJ74jBEqp_XlD91luDeK3mdzLGkV0Pd&_nc_ohc=bAzdSgltBaIQ7kNvwHfN2lB&_nc_oc=Adr-8trfHepcVsz_TAeeHtLLZOzdSzATDRRbl_zf6UOM9NwpGl13wvPJl0_bXXNR0Hw&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=i2ewYMuIyNk38n3vm98iNA&_nc_ss=7b2a8&oh=00_Af6JE7WICIgFhYH10En2n0D7aFzM7uPBqe6w8l8jTvYJ9g&oe=6A09F8E3" },
             { name: "Saif Hasan", role: "Operative", phone: "01753326883", address: "Nilphamary", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472847701_122138044520451718_5717908140505922533_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHsDZ_YiZjhVWCB9HMsORFQ3mD9V50tQdveYP1XnS1B261BATfFxPjeNaU6O2VkZ4QGlt4KHF5CPCROmWzhIt0K&_nc_ohc=CY_9fuHoKe8Q7kNvwGwf161&_nc_oc=AdoybMamA7dOdVVj53e-n2rSsyzLjayf7GKQtmKJMnfHa6Jle3EuIJbwPu6FIM9Urv4&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=p7mVdCOhfEjbjDweOyB9BQ&_nc_ss=7b2a8&oh=00_Af4vgSM2Hsm0QN52vC00cKU_HeSjb87ggRJrXNJubGeKFw&oe=6A0A2B85" },
             { name: "Shahrear Lalon", role: "Operative", phone: "01767075237", address: "Mymensingh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472144298_1155661549558567_3609989594921465096_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFEZ2cL4cIyEFhkwpPshDxmrwg7-6FzdK2vCDv7oXN0rR3njOGQHXHTZAYJuPq5rdvrGIP4rRQlA1ALmbgeguCq&_nc_ohc=h0BPJmFoxLEQ7kNvwF_LJ45&_nc_oc=Ado568uHPM3kNSKI0EcVtKd9r5otMdQDr-Qo532MIINWmDh3tpIIOwO3FyiyaJfMrwA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=VcLo6PiFZS538hBi9dKNAg&_nc_ss=7b2a8&oh=00_Af6giDS2PFwsq56rpKxzgb-evJq8hiGpn0HYOKabCwHaxg&oe=6A0A2283" }
+        ];
+
+        // ========== EXTENDED PROFILES ==========
+        // 🔧 HINT: এখানে প্রতিটা মেম্বারের বিস্তারিত তথ্য দাও
+        // 🔧 "UPDATE_HERE" লেখা জায়গাগুলো তোমার আসল ডেটা দিয়ে বদলাও
+        const memberProfiles = [
+            { // 0 - Samiul
+                fullName: "UPDATE_HERE",        // পুরো নাম লিখো
+                nickName: "UPDATE_HERE",        // ডাক নাম
+                fatherName: "UPDATE_HERE",      // বাবার নাম
+                motherName: "UPDATE_HERE",      // মায়ের নাম
+                address: "Feni, Barisāl",       // ঠিকানা
+                gmail: "UPDATE_HERE@gmail.com", // জিমেইল
+                telegram: "UPDATE_HERE",        // টেলিগ্রাম ইউজারনেম
+                whatsapp: "UPDATE_HERE",        // হোয়াটসঅ্যাপ নম্বর
+                facebook: "UPDATE_HERE"         // ফেসবুক লিংক
+            },
+            { // 1 - Mehedi Hasan Uzzal
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Noakhali, Chittagong",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            },
+            { // 2 - Mehedi Hasan Tamim
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Dhaka",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "01963177023",
+                facebook: "UPDATE_HERE"
+            },
+            { // 3 - Akash
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Dhaka",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            },
+            { // 4 - Pranto Biswas
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Dhaka",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            },
+            { // 5 - Samyy
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Kushtia, Khulna",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            },
+            { // 6 - Saif Hasan
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Nilphamary",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            },
+            { // 7 - Shahrear Lalon
+                fullName: "UPDATE_HERE",
+                nickName: "UPDATE_HERE",
+                fatherName: "UPDATE_HERE",
+                motherName: "UPDATE_HERE",
+                address: "Mymensingh",
+                gmail: "UPDATE_HERE@gmail.com",
+                telegram: "UPDATE_HERE",
+                whatsapp: "UPDATE_HERE",
+                facebook: "UPDATE_HERE"
+            }
         ];
 
         // Generate Slider
@@ -338,11 +556,11 @@
             const modal = document.getElementById('image-modal');
             const content = document.getElementById('image-modal-content');
             const img = document.getElementById('modal-img');
-            
+
             img.src = imgSrc;
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
+
             // Trigger animation
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -353,45 +571,75 @@
 
         function openDetailsModal(index) {
             const m = members[index];
+            const p = memberProfiles[index];
             const modal = document.getElementById('details-modal');
             const content = document.getElementById('details-modal-content');
             const container = document.getElementById('modal-details-container');
-            
+
+            // Helper: show value or "Not Set"
+            const val = (v) => (!v || v.includes('UPDATE_HERE')) ? '<span class="text-yellow-500/70 italic">Not Set Yet</span>' : v;
+
             container.innerHTML = `
-                <div class="w-full md:w-2/5 flex flex-col items-center border-r border-sky-900/50 pr-0 md:pr-8">
-                    <div class="w-48 h-48 rounded-2xl overflow-hidden border-2 border-sky-400 shadow-[0_0_30px_rgba(56,189,248,0.5)] mb-6 img-zoom-container cursor-zoom-in" onclick="openImageModal('${m.img}')">
+                <div class="w-full md:w-2/5 flex flex-col items-center md:border-r border-sky-900/50 pr-0 md:pr-6">
+                    <div class="w-40 h-40 rounded-2xl overflow-hidden border-2 border-sky-400 shadow-[0_0_30px_rgba(56,189,248,0.5)] mb-4 img-zoom-container cursor-zoom-in" onclick="openImageModal('${m.img}')">
                         <img src="${m.img}" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-2xl font-bold gradient-text text-center uppercase tracking-wider">${m.name}</h3>
-                    <p class="text-green-400 text-sm font-mono uppercase tracking-widest mt-2 bg-green-500/10 px-3 py-1 rounded border border-green-500/30"><i class="fas fa-check-circle mr-1"></i> Active Status</p>
+                    <h3 class="text-xl font-bold gradient-text text-center uppercase">${m.name}</h3>
+                    <p class="text-green-400 text-xs font-mono uppercase tracking-widest mt-2 bg-green-500/10 px-3 py-1 rounded border border-green-500/30"><i class="fas fa-check-circle mr-1"></i> Active</p>
                 </div>
-                <div class="w-full md:w-3/5 flex flex-col justify-center space-y-6">
-                    <h4 class="text-xl font-bold border-b border-sky-500/30 pb-3 text-sky-400 font-mono uppercase tracking-widest">
-                        <i class="fas fa-folder-open mr-2"></i> Classified Intel
+                <div class="w-full md:w-3/5 flex flex-col space-y-3 max-h-[60vh] overflow-y-auto pr-2" style="scrollbar-width:thin; scrollbar-color:#38bdf8 transparent;">
+                    <h4 class="text-lg font-bold border-b border-sky-500/30 pb-2 text-sky-400 font-mono uppercase tracking-widest sticky top-0 bg-slate-900/95 z-10">
+                        <i class="fas fa-folder-open mr-2"></i> Full Dossier
                     </h4>
                     
-                    <div class="grid grid-cols-1 gap-4 text-sm font-mono">
-                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
-                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Contact Coordinate</span>
-                            <span class="text-white text-base group-hover:text-sky-300 transition-colors"><i class="fas fa-phone mr-3 text-sky-500"></i>${m.phone}</span>
+                    <div class="grid grid-cols-1 gap-2 text-xs font-mono">
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-id-card mr-1 text-sky-500"></i> Full Name</span>
+                            <span class="text-white text-sm">${val(p.fullName)}</span>
                         </div>
-                        
-                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
-                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Base Location</span>
-                            <span class="text-white text-base group-hover:text-sky-300 transition-colors"><i class="fas fa-map-marker-alt mr-3 text-sky-500"></i>${m.address}</span>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-mask mr-1 text-purple-500"></i> Nick Name</span>
+                            <span class="text-white text-sm">${val(p.nickName)}</span>
                         </div>
-                        
-                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
-                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Clearance Level</span>
-                            <span class="text-green-400 text-base flex items-center"><i class="fas fa-shield-alt mr-3"></i> Top Secret (Lvl-5)</span>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-male mr-1 text-blue-400"></i> Father's Name</span>
+                            <span class="text-white text-sm">${val(p.fatherName)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-female mr-1 text-pink-400"></i> Mother's Name</span>
+                            <span class="text-white text-sm">${val(p.motherName)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-map-marker-alt mr-1 text-red-400"></i> Address</span>
+                            <span class="text-white text-sm">${val(p.address)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-phone mr-1 text-green-400"></i> Phone</span>
+                            <span class="text-white text-sm">${m.phone}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fab fa-whatsapp mr-1 text-green-500"></i> WhatsApp</span>
+                            <span class="text-white text-sm">${val(p.whatsapp)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fas fa-envelope mr-1 text-red-500"></i> Gmail</span>
+                            <span class="text-white text-sm">${val(p.gmail)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fab fa-telegram mr-1 text-sky-400"></i> Telegram</span>
+                            <span class="text-white text-sm">${val(p.telegram)}</span>
+                        </div>
+                        <div class="bg-black/50 p-3 rounded-lg border border-sky-900 hover:border-sky-500 transition-colors">
+                            <span class="text-gray-500 block text-[10px] uppercase mb-1"><i class="fab fa-facebook mr-1 text-blue-500"></i> Facebook</span>
+                            <span class="text-white text-sm">${val(p.facebook)}</span>
                         </div>
                     </div>
                 </div>
             `;
-            
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            
+
             // Trigger animation
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -405,15 +653,15 @@
             const imgContent = document.getElementById('image-modal-content');
             const detailsModal = document.getElementById('details-modal');
             const detailsContent = document.getElementById('details-modal-content');
-            
+
             imgModal.classList.add('opacity-0');
             imgContent.classList.remove('scale-100');
             imgContent.classList.add('scale-50');
-            
+
             detailsModal.classList.add('opacity-0');
             detailsContent.classList.remove('scale-100');
             detailsContent.classList.add('scale-50');
-            
+
             setTimeout(() => {
                 imgModal.classList.add('hidden');
                 imgModal.classList.remove('flex');
@@ -432,8 +680,8 @@
         function checkAccess() {
             const key = document.getElementById('access-key').value;
             const correctKey = "octasquad2026";
-            
-            if(key === correctKey) {
+
+            if (key === correctKey) {
                 document.getElementById('login-overlay').classList.add('hidden');
                 startLoading();
             } else {
@@ -450,10 +698,10 @@
             const bar = document.getElementById('progress-bar');
             const text = document.getElementById('progress-text');
             const main = document.getElementById('main-content');
-            
+
             loader.classList.remove('hidden');
             loader.classList.add('flex');
-            
+
             const logs = [
                 "> INITIALIZING SECURE PROTOCOLS...",
                 "> BYPASSING FIREWALLS...",
@@ -467,7 +715,7 @@
 
             let logIndex = 0;
             const logInterval = setInterval(() => {
-                if(logIndex < logs.length) {
+                if (logIndex < logs.length) {
                     const line = document.createElement('div');
                     line.textContent = logs[logIndex];
                     line.className = "mb-1 text-sky-400 font-mono tracking-wide typing-effect";
@@ -484,8 +732,8 @@
                 progress += 1;
                 bar.style.width = progress + "%";
                 text.textContent = progress + "%";
-                
-                if(progress >= 100) {
+
+                if (progress >= 100) {
                     clearInterval(progressInterval);
                     setTimeout(() => {
                         loader.classList.add('opacity-0', 'transition-opacity', 'duration-500');
@@ -507,11 +755,12 @@
             const amount = 6500;
             const bKashNumber = "017XXXXXXXX"; // replace with real number
             const paymentUrl = `https://shop.bkash.com/payment/pay?amount=${amount}&receiver=${bKashNumber}`;
-            
-            if(confirm("AUTHORIZATION REQUIRED: Transfer ৳6,500 to Base Command?")) {
+
+            if (confirm("AUTHORIZATION REQUIRED: Transfer ৳6,500 to Base Command?")) {
                 window.location.href = paymentUrl;
             }
         }
     </script>
 </body>
+
 </html>
