@@ -7,161 +7,431 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #050b14; color: white; }
+        h1, h2, h3, h4, .font-mono { font-family: 'Share Tech Mono', monospace; }
+        
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             transition: transform 0.3s ease;
         }
-        .glass-card:hover { transform: translateY(-10px); border-color: #38bdf8; }
+        .glass-card:hover { border-color: #38bdf8; }
+        
         .gradient-text {
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Slider Styles */
+        .slider-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding: 2rem 1rem;
+            scroll-behavior: smooth;
+        }
+        .slider-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .slider-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+        .slider-container::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #38bdf8;
+        }
+        .slider-item {
+            scroll-snap-align: center;
+            flex: 0 0 100%;
+        }
+        @media (min-width: 768px) {
+            .slider-item { flex: 0 0 70%; }
+        }
+        @media (min-width: 1024px) {
+            .slider-item { flex: 0 0 45%; }
+        }
+
+        /* RGB Border Effects */
+        .rgb-box {
+            position: relative;
+            background: #091221;
+            border-radius: 1.5rem;
+            z-index: 1;
+        }
+        .rgb-box::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            z-index: -1;
+            border-radius: 1.6rem;
+            background-size: 400%;
+            animation: rgb-glow 20s linear infinite;
+            opacity: 0.6;
+        }
+        .rgb-box:hover::before {
+            opacity: 1;
+            filter: blur(8px);
+        }
+        @keyframes rgb-glow {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Image zoom */
+        .img-zoom-container {
+            overflow: hidden;
+            border-radius: 1rem;
+            cursor: pointer;
+            position: relative;
+        }
+        .img-zoom-container img {
+            transition: transform 0.5s ease;
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.15);
+        }
+        .img-zoom-container::after {
+            content: '\f00e';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .img-zoom-container:hover::after {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar for body */
+        body::-webkit-scrollbar { width: 10px; }
+        body::-webkit-scrollbar-track { background: #050b14; }
+        body::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 5px; border: 1px solid #38bdf8; }
     </style>
 </head>
 <body class="overflow-hidden">
 
-    <!-- Login Overlay -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center p-6">
-        <div class="glass-card p-10 rounded-3xl w-full max-w-md border-sky-500/50 shadow-[0_0_50px_rgba(56,189,248,0.2)]">
-            <div class="text-center mb-8">
-                <i class="fas fa-user-shield text-5xl text-sky-500 mb-4"></i>
-                <h2 class="text-3xl font-bold gradient-text">Squad Access</h2>
-                <p class="text-gray-400">Authorized Personnel Only</p>
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()">
+        <div class="relative transform scale-50 transition-transform duration-300" id="image-modal-content" onclick="event.stopPropagation()">
+            <img id="modal-img" src="" class="max-w-[90vw] max-h-[90vh] rounded-2xl border-4 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.5)] object-contain">
+            <button onclick="closeModals()" class="absolute -top-10 right-0 text-gray-400 hover:text-red-500 text-3xl transition-colors"><i class="fas fa-times-circle"></i></button>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="fixed inset-0 z-[150] hidden items-center justify-center bg-black/95 opacity-0 transition-opacity duration-300 backdrop-blur-sm" onclick="closeModals()">
+        <div class="relative transform scale-50 transition-transform duration-300 w-full max-w-2xl bg-slate-900/90 rounded-3xl p-8 border-2 border-sky-500 shadow-[0_0_50px_rgba(56,189,248,0.3)] backdrop-blur-md" id="details-modal-content" onclick="event.stopPropagation()">
+            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl transition-colors"><i class="fas fa-times"></i></button>
+            <div id="modal-details-container" class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                <!-- Populated by JS -->
             </div>
-            <div class="space-y-6">
-                                <div>
-                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2">Access Key</label>
-                    <input type="password" id="access-key" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-sky-500 transition-all text-sky-400 tracking-widest" placeholder="••••••••">
-                    <p class="text-[10px] text-gray-600 mt-2 italic">Hint: octasquadXXXX (The year after next)</p>
+        </div>
+    </div>
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-[#050b14] flex items-center justify-center p-6 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 to-[#050b14]">
+        <div class="glass-card p-10 rounded-3xl w-full max-w-md border-sky-500/50 shadow-[0_0_50px_rgba(56,189,248,0.2)] relative overflow-hidden">
+            <div class="absolute inset-0 bg-sky-500/5 blur-[100px]"></div>
+            <div class="text-center mb-8 relative z-10">
+                <i class="fas fa-user-ninja text-5xl text-sky-500 mb-4 animate-pulse"></i>
+                <h2 class="text-3xl font-bold gradient-text tracking-widest uppercase">Squad Access</h2>
+                <p class="text-sky-400/60 font-mono text-sm mt-2">Authorized Personnel Only</p>
+            </div>
+            <div class="space-y-6 relative z-10">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-sky-500/70 mb-2 font-mono">Decryption Key</label>
+                    <input type="password" id="access-key" class="w-full bg-black/50 border border-sky-900 rounded-xl px-4 py-3 focus:outline-none focus:border-sky-400 transition-all text-sky-400 tracking-widest font-mono shadow-[inset_0_0_10px_rgba(56,189,248,0.1)]" placeholder="••••••••">
+                    <p class="text-[10px] text-gray-500 mt-2 italic font-mono">> Hint: octasquadXXXX (The year after next)</p>
                 </div>
 
-                <button onclick="checkAccess()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-sky-900/20">
-                    Decrypt & Enter
+                <button onclick="checkAccess()" class="w-full bg-sky-600/20 hover:bg-sky-500/40 text-sky-400 border border-sky-500/50 font-bold py-3 rounded-xl transition-all shadow-[0_0_15px_rgba(56,189,248,0.3)] hover:shadow-[0_0_25px_rgba(56,189,248,0.6)] font-mono uppercase tracking-widest">
+                    <i class="fas fa-unlock-alt mr-2"></i> Initialize
                 </button>
-                <p id="login-error" class="text-red-500 text-xs text-center hidden">Access Denied: Invalid Authentication Key</p>
+                <p id="login-error" class="text-red-500 text-xs text-center hidden font-mono bg-red-500/10 py-2 rounded border border-red-500/30 animate-bounce">ACCESS DENIED: INVALID KEY</p>
             </div>
         </div>
     </div>
 
     <!-- Hacking Simulator / Loader -->
-    <div id="loader-overlay" class="fixed inset-0 z-[90] bg-black hidden flex-col items-center justify-center p-10 font-mono">
-        <div class="w-full max-w-2xl">
-            <div id="terminal-output" class="text-green-500 text-sm mb-6 h-64 overflow-hidden leading-relaxed"></div>
-            <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden border border-gray-800">
-                <div id="progress-bar" class="bg-sky-500 h-full w-0 transition-all duration-100 ease-linear"></div>
+    <div id="loader-overlay" class="fixed inset-0 z-[90] bg-[#02050a] hidden flex-col items-center justify-center p-10 font-mono relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, #38bdf8 2px, #38bdf8 4px); background-size: 100% 4px;"></div>
+        <div class="w-full max-w-2xl relative z-10">
+            <div id="terminal-output" class="text-sky-400 text-sm mb-6 h-64 overflow-hidden leading-relaxed drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]"></div>
+            <div class="w-full bg-black h-2 rounded-full overflow-hidden border border-sky-900 shadow-[0_0_10px_rgba(56,189,248,0.2)]">
+                <div id="progress-bar" class="bg-sky-400 h-full w-0 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(56,189,248,1)]"></div>
             </div>
-            <div class="flex justify-between mt-2">
-                <span class="text-sky-500 text-xs uppercase tracking-tighter">System Initializing...</span>
-                <span id="progress-text" class="text-sky-500 text-xs font-bold">0%</span>
+            <div class="flex justify-between mt-3">
+                <span class="text-sky-500/80 text-xs uppercase tracking-widest animate-pulse">Establishing Secure Connection...</span>
+                <span id="progress-text" class="text-sky-400 text-xs font-bold drop-shadow-[0_0_5px_rgba(56,189,248,0.8)]">0%</span>
             </div>
         </div>
     </div>
 
     <!-- Main Content (Hidden initially) -->
-    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000 relative">
+        <!-- Background Grid Effect -->
+        <div class="fixed inset-0 z-[-1] opacity-5 pointer-events-none" style="background-image: linear-gradient(#38bdf8 1px, transparent 1px), linear-gradient(90deg, #38bdf8 1px, transparent 1px); background-size: 30px 30px;"></div>
 
+        <!-- Hero Section -->
+        <header class="pt-24 pb-12 text-center relative">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-sky-500/20 blur-[100px] rounded-full z-[-1]"></div>
+            <h1 class="text-5xl md:text-7xl font-bold gradient-text mb-4 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(56,189,248,0.4)]">The Octa Squad</h1>
+            <p class="text-sky-400/80 font-mono text-lg tracking-widest uppercase"><i class="fas fa-network-wired mr-2"></i>Premium Management Protocol</p>
+        </header>
 
-    <!-- Hero Section -->
-    <header class="py-20 text-center">
-        <h1 class="text-6xl font-bold gradient-text mb-4">The Octa Squad</h1>
-        <p class="text-gray-400 text-xl">Premium Flat Life & Management System</p>
-    </header>
+        <!-- Squad Members Slider Section -->
+        <section class="w-full py-10 relative">
+            <h2 class="text-3xl font-bold mb-10 text-center text-white font-mono uppercase tracking-widest"><span class="text-sky-500">></span> Active Operatives</h2>
+            
+            <div class="slider-container px-4 md:px-20" id="members-slider">
+                <!-- Slider items generated by JS -->
+            </div>
+        </section>
 
-    <!-- Squad Members Section -->
-    <section class="container mx-auto px-6 py-10">
-        <h2 class="text-3xl font-bold mb-10 text-center border-b-2 border-sky-500 w-fit mx-auto pb-2">Our Members</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <script>
-                const members = [
-                    { name: "Samiul", role: "Member", phone: "01817928308", address: "Feni, Barisāl, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/653918675_948109031501708_5385125916699200494_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZhe0N4IuceJL5KTme-1ZOxr-b747yGmXGv5vvjvIaZU2WpaeAka2mNxaAcl9wHvq8UEzzpnBirgNJ_wGNPI4A&_nc_ohc=IA5YEUGwf9EQ7kNvwHW6zkK&_nc_oc=Adrah8jd-8E8Y0RxM-64ZbvXlQ1PakOeCKqwZIWcNEMbqmJrPErvaZ4WGvTLpNnwfIA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=SnOnzZMMisK-70qeg-MsQQ&_nc_ss=7b2a8&oh=00_Af7JWym9eLlFjyxo8wqwLpYp_Cf5N9ThzeUZjCxGmBNZig&oe=6A0A2A6E" },
-                    { name: "Mehedi Hasan Uzzal", role: "Member", phone: "01721171550", address: "Noakhali, Chittagong, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/480545218_1144565723793166_1491244213710637104_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeElkGohVp_GEO5CHvAXhdX99ibcE6d_PTb2JtwTp389Nkoa0pWaKUPbm44EEddu-y3orPZHQvESBI0K2TfEr7Lx&_nc_ohc=MbwYCTvBRBIQ7kNvwEpy5Br&_nc_oc=AdpRf8IFK__jG9IGHBkh-NhvhnfRrGoSTst_T41E35_Rwi9r176WoQh18-CQ-2B8SFU&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=UDOn45Xzyknj3FB49VwZ5g&_nc_ss=7b2a8&oh=00_Af6L1xSTERqIPzu8DDJULasmV81vUWZBFNA0JAt5Oyo8EQ&oe=6A0A08FA" },
-                    { name: "Mehedi Hasan Tamim", role: "Member", phone: "01963177023 (Whatsapp)", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/490098268_4171695549821186_1644536591428218970_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGc3Vz_lKfaFJd0HWf-97PTYVDUi9VrArZhUNSL1WsCtvTsJQl2ld3x_qQNISFxQ8ldBPZ8X2DDXhvDmFg3d9Yk&_nc_ohc=xD7IoHeLPo0Q7kNvwGNJfGL&_nc_oc=Adom3a-hmbHgNM29znCY7gmCEhPuW-D_nOEHK7DfsMhC21bPa6YbEUsfc1hoj-Y5eEE&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=PhRlnkPBtoBhnY9rM5lz1w&_nc_ss=7b2a8&oh=00_Af4Dkul7w2EfYnliX5Oea01G-Mefy1g1rTkJJODnNFoD9w&oe=6A09F768" },
-                    { name: "Akash", role: "Member", phone: "01331252962", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/634026528_122094703251278363_4154357581737564418_n.jpg?stp=cp0_dst-jpg_s60x60_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEt7NLM5RzlZLDxtl90cfaT7Ho4Iy7QMGzsejgjLtAwbADCxmvVc3z5pRKSaUfKAbxFGNJx-Y2g4u0UeupQ-y7n&_nc_ohc=VBYS31PPMesQ7kNvwF2RhO4&_nc_oc=Adqep3CR66zaEekiXZZdHkpStcJU0A326-JGNxEQNei5gV6YQjqwh6_KKd5bBcJnR18&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=rd9GZeZeTg0fElVdPFWr0w&_nc_ss=7b2a8&oh=00_Af44xq8uSYJEUZb00juS0rsEcRYZGNru62-td7bkff4tvw&oe=6A0A2677" },
-                    { name: "Pranto Biswas", role: "Member", phone: "01768344230", address: "Dhaka", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pranto" },
-                    { name: "Samyy", role: "Member", phone: "01612505049", address: "Kushtia, Khulna, Bangladesh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/696836728_2135255480654648_9164734055409742991_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGGL5hJs0-s5ycyOX0TLYnGOrAGhSYlDZw6sAaFJiUNnF1R6cR8ORjvNiJ74jBEqp_XlD91luDeK3mdzLGkV0Pd&_nc_ohc=bAzdSgltBaIQ7kNvwHfN2lB&_nc_oc=Adr-8trfHepcVsz_TAeeHtLLZOzdSzATDRRbl_zf6UOM9NwpGl13wvPJl0_bXXNR0Hw&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=i2ewYMuIyNk38n3vm98iNA&_nc_ss=7b2a8&oh=00_Af6JE7WICIgFhYH10En2n0D7aFzM7uPBqe6w8l8jTvYJ9g&oe=6A09F8E3" },
-                    { name: "Saif Hasan", role: "Member", phone: "01753326883", address: "Nilphamary", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472847701_122138044520451718_5717908140505922533_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHsDZ_YiZjhVWCB9HMsORFQ3mD9V50tQdveYP1XnS1B261BATfFxPjeNaU6O2VkZ4QGlt4KHF5CPCROmWzhIt0K&_nc_ohc=CY_9fuHoKe8Q7kNvwGwf161&_nc_oc=AdoybMamA7dOdVVj53e-n2rSsyzLjayf7GKQtmKJMnfHa6Jle3EuIJbwPu6FIM9Urv4&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=p7mVdCOhfEjbjDweOyB9BQ&_nc_ss=7b2a8&oh=00_Af4vgSM2Hsm0QN52vC00cKU_HeSjb87ggRJrXNJubGeKFw&oe=6A0A2B85" },
-                    { name: "Shahrear Lalon", role: "Member", phone: "01767075237X", address: "Mymensingh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472144298_1155661549558567_3609989594921465096_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFEZ2cL4cIyEFhkwpPshDxmrwg7-6FzdK2vCDv7oXN0rR3njOGQHXHTZAYJuPq5rdvrGIP4rRQlA1ALmbgeguCq&_nc_ohc=h0BPJmFoxLEQ7kNvwF_LJ45&_nc_oc=Ado568uHPM3kNSKI0EcVtKd9r5otMdQDr-Qo532MIINWmDh3tpIIOwO3FyiyaJfMrwA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=VcLo6PiFZS538hBi9dKNAg&_nc_ss=7b2a8&oh=00_Af6giDS2PFwsq56rpKxzgb-evJq8hiGpn0HYOKabCwHaxg&oe=6A0A2283" }
-                ];
-
-                members.forEach(m => {
-                    document.write(`
-                        <div class="glass-card p-6 rounded-2xl text-center">
-                            <img src="${m.img}" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-sky-500 bg-slate-800" alt="${m.name}">
-                            <h3 class="text-xl font-bold">${m.name}</h3>
-                            <p class="text-sky-400 text-sm mb-2">${m.role}</p>
-                            <p class="text-gray-400 text-xs"><i class="fas fa-phone mr-1"></i> ${m.phone}</p>
-                            <p class="text-gray-400 text-xs mt-1"><i class="fas fa-map-marker-alt mr-1"></i> ${m.address}</p>
+        <!-- Flat Details & Finance -->
+        <section class="container mx-auto px-6 py-20 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="glass-card p-8 rounded-3xl border-sky-500/30 relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 text-9xl text-sky-500/5"><i class="fas fa-map-marked-alt"></i></div>
+                    <h2 class="text-3xl font-bold mb-6 font-mono uppercase text-sky-400 border-b border-sky-500/30 pb-4">> Base Coordinates</h2>
+                    <div class="space-y-6 text-gray-300 font-mono">
+                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-building"></i></div>
+                            <div>
+                                <p class="text-xs text-sky-500/70 uppercase">Designation</p>
+                                <p class="text-lg text-white">Unknown Entity</p>
+                            </div>
                         </div>
-                    `);
-                });
-            </script>
-        </div>
-    </section>
-
-    <!-- Flat Details & Finance -->
-    <section class="container mx-auto px-6 py-20 bg-slate-900/50 rounded-3xl my-10 border border-slate-800">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="text-4xl font-bold mb-6">Flat Details & Location</h2>
-                <div class="space-y-4 text-gray-300">
-                    <p><i class="fas fa-home text-sky-500 mr-2"></i> <strong>Flat Name:</strong>unknown</p>
-                    <p><i class="fas fa-user-shield text-sky-500 mr-2"></i> <strong>Caretaker:</strong> Md Usman vai (018XXXXXXXX)</p>
-                    <p><i class="fas fa-map-signs text-sky-500 mr-2"></i> <strong>Address:</strong> V899+J29, Khagan(Near DIU)</p>
+                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-user-shield"></i></div>
+                            <div>
+                                <p class="text-xs text-sky-500/70 uppercase">Commander</p>
+                                <p class="text-lg text-white">Md Usman Vai <span class="text-sm text-gray-500">(018XXXXXXXX)</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 bg-black/40 p-4 rounded-xl border border-sky-900/50 hover:border-sky-500/50 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl"><i class="fas fa-crosshairs"></i></div>
+                            <div>
+                                <p class="text-xs text-sky-500/70 uppercase">Location</p>
+                                <p class="text-lg text-white">V899+J29, Khagan <span class="text-sm text-gray-500">(Near DIU)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 rounded-xl overflow-hidden border-2 border-sky-500/30 shadow-[0_0_20px_rgba(56,189,248,0.15)] h-[250px] relative group">
+                        <div class="absolute inset-0 bg-sky-500/10 pointer-events-none group-hover:bg-transparent transition-colors"></div>
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1576.2891965997232!2d90.3175225!3d23.8690332!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c2005c6f6637%3A0xe5452d37c0f1624b!2zMjPCsDUyJzA4LjUiTiA5MMKwMTknMDMuMSJF!5e1!3m2!1sen!2sbd!4v1740209633393!5m2!1sen!2sbd"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                        <div class="absolute bottom-0 w-full bg-black/80 backdrop-blur p-2 text-center border-t border-sky-500/50 transform translate-y-full group-hover:translate-y-0 transition-transform">
+                            <a href="https://maps.app.goo.gl/qWzSqStLrXkqAyyT8" target="_blank" class="text-sky-400 text-sm font-mono hover:text-white transition-colors">
+                                <i class="fas fa-satellite-dish mr-2 animate-pulse"></i> Open Satellite Uplink
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                
-                                                <div class="mt-8 rounded-xl overflow-hidden border border-gray-700 shadow-2xl h-[300px]">
-                                                    <iframe 
-                                                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1576.2891965997232!2d90.3175225!3d23.8690332!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c2005c6f6637%3A0xe5452d37c0f1624b!2zMjPCsDUyJzA4LjUiTiA5MMKwMTknMDMuMSJF!5e1!3m2!1sen!2sbd!4v1740209633393!5m2!1sen!2sbd"
-                                                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                                    </iframe>
-                                                    <div class="bg-slate-800 p-2 text-center">
-                                                        <a href="https://maps.app.goo.gl/qWzSqStLrXkqAyyT8" target="_blank" class="text-sky-400 text-sm hover:underline">
-                                                            <i class="fas fa-external-link-alt mr-1"></i> Open in Google Maps
-                                                        </a>
-                                                    </div>
-                                                </div>
 
+                <div class="glass-card p-10 rounded-3xl border-sky-500/50 shadow-[0_0_40px_rgba(56,189,248,0.1)] relative">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-[50px] rounded-full"></div>
+                    <h2 class="text-3xl font-bold mb-8 text-center font-mono uppercase text-sky-400">> Financial Ledger</h2>
+                    
+                    <div class="bg-black/50 p-6 rounded-2xl border border-sky-900/50 mb-8 font-mono">
+                        <ul class="space-y-4 text-sm md:text-base">
+                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-home w-6 text-sky-500/50"></i> Base Rent</span> 
+                                <span class="text-white">৳5,000</span>
+                            </li>
+                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-bolt w-6 text-sky-500/50"></i> Energy/Water</span> 
+                                <span class="text-white">৳1,200</span>
+                            </li>
+                            <li class="flex justify-between border-b border-gray-800 pb-3 hover:text-sky-300 transition-colors">
+                                <span class="text-gray-400"><i class="fas fa-wifi w-6 text-sky-500/50"></i> Network</span> 
+                                <span class="text-white">৳300</span>
+                            </li>
+                            <li class="flex justify-between font-bold text-xl pt-4">
+                                <span class="text-sky-400 uppercase tracking-widest">Total Req</span> 
+                                <span class="text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]">৳6,500</span>
+                            </li>
+                        </ul>
+                    </div>
 
-
-            </div>
-
-            <div class="glass-card p-8 rounded-3xl border-sky-500/30">
-                <h2 class="text-3xl font-bold mb-6 text-center">Monthly Cost (Per Person)</h2>
-                <ul class="space-y-4 text-lg">
-                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Flat Rent</span> <span class="text-sky-400">৳5,000</span></li>
-                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Utility (Gas/Water/Current)</span> <span class="text-sky-400">৳1,200</span></li>
-                    <li class="flex justify-between border-b border-gray-700 pb-2"><span>Wifi & Others</span> <span class="text-sky-400">৳300</span></li>
-                    <li class="flex justify-between font-bold text-xl pt-4"><span>Total Bill</span> <span class="text-green-400">৳6,500</span></li>
-                </ul>
-
-                <div class="mt-10">
-                    <button onclick="payViaBkash()" class="w-full bg-[#D12053] hover:bg-[#A11940] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg">
-                        <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg" class="w-8 h-8" alt="bKash"> Pay via bKash
-                    </button>
-                    <p class="text-[10px] text-center text-gray-500 mt-2 uppercase tracking-widest">Powered by Octa Squad Finance</p>
+                    <div class="mt-6">
+                        <button onclick="payViaBkash()" class="w-full bg-gradient-to-r from-[#D12053] to-[#e8376d] hover:from-[#A11940] hover:to-[#D12053] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(209,32,83,0.4)] hover:shadow-[0_0_30px_rgba(209,32,83,0.6)] group">
+                            <img src="https://www.logo.wine/a/logo/BKash/BKash-Icon-Logo.wine.svg" class="w-8 h-8 group-hover:scale-110 transition-transform" alt="bKash"> 
+                            <span class="uppercase tracking-widest font-mono">Transfer Funds</span>
+                        </button>
+                        <p class="text-[10px] text-center text-sky-500/50 mt-4 uppercase tracking-widest font-mono"><i class="fas fa-lock mr-1"></i> Secured by Octa Squad Crypto-Net</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="text-center py-10 text-gray-500 border-t border-gray-800">
-        <p>&copy; 2024 The Octa Squad | Excellence in Unity</p>
-    </footer>
+        <!-- Footer -->
+        <footer class="text-center py-10 text-sky-500/30 border-t border-sky-900/30 font-mono text-sm">
+            <p>> END OF LINE &copy; 2024 THE OCTA SQUAD_</p>
+        </footer>
 
-        </div> <!-- End Main Content -->
+    </div> <!-- End Main Content -->
 
     <script>
-        // Password Protection
-                function checkAccess() {
-            const key = document.getElementById('access-key').value;
-            const correctKey = "octasquad2026"; // Updated password
+        const members = [
+            { name: "Samiul", role: "Operative", phone: "01817928308", address: "Feni, Barisāl", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/653918675_948109031501708_5385125916699200494_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZhe0N4IuceJL5KTme-1ZOxr-b747yGmXGv5vvjvIaZU2WpaeAka2mNxaAcl9wHvq8UEzzpnBirgNJ_wGNPI4A&_nc_ohc=IA5YEUGwf9EQ7kNvwHW6zkK&_nc_oc=Adrah8jd-8E8Y0RxM-64ZbvXlQ1PakOeCKqwZIWcNEMbqmJrPErvaZ4WGvTLpNnwfIA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=SnOnzZMMisK-70qeg-MsQQ&_nc_ss=7b2a8&oh=00_Af7JWym9eLlFjyxo8wqwLpYp_Cf5N9ThzeUZjCxGmBNZig&oe=6A0A2A6E" },
+            { name: "Mehedi Hasan Uzzal", role: "Operative", phone: "01721171550", address: "Noakhali, Chittagong", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/480545218_1144565723793166_1491244213710637104_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=108&ccb=1-7&_nc_sid=1d2534&_nc_eui2=AeElkGohVp_GEO5CHvAXhdX99ibcE6d_PTb2JtwTp389Nkoa0pWaKUPbm44EEddu-y3orPZHQvESBI0K2TfEr7Lx&_nc_ohc=MbwYCTvBRBIQ7kNvwEpy5Br&_nc_oc=AdpRf8IFK__jG9IGHBkh-NhvhnfRrGoSTst_T41E35_Rwi9r176WoQh18-CQ-2B8SFU&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=UDOn45Xzyknj3FB49VwZ5g&_nc_ss=7b2a8&oh=00_Af6L1xSTERqIPzu8DDJULasmV81vUWZBFNA0JAt5Oyo8EQ&oe=6A0A08FA" },
+            { name: "Mehedi Hasan Tamim", role: "Operative", phone: "01963177023", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/490098268_4171695549821186_1644536591428218970_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeGc3Vz_lKfaFJd0HWf-97PTYVDUi9VrArZhUNSL1WsCtvTsJQl2ld3x_qQNISFxQ8ldBPZ8X2DDXhvDmFg3d9Yk&_nc_ohc=xD7IoHeLPo0Q7kNvwGNJfGL&_nc_oc=Adom3a-hmbHgNM29znCY7gmCEhPuW-D_nOEHK7DfsMhC21bPa6YbEUsfc1hoj-Y5eEE&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=PhRlnkPBtoBhnY9rM5lz1w&_nc_ss=7b2a8&oh=00_Af4Dkul7w2EfYnliX5Oea01G-Mefy1g1rTkJJODnNFoD9w&oe=6A09F768" },
+            { name: "Akash", role: "Operative", phone: "01331252962", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/634026528_122094703251278363_4154357581737564418_n.jpg?stp=cp0_dst-jpg_s60x60_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeEt7NLM5RzlZLDxtl90cfaT7Ho4Iy7QMGzsejgjLtAwbADCxmvVc3z5pRKSaUfKAbxFGNJx-Y2g4u0UeupQ-y7n&_nc_ohc=VBYS31PPMesQ7kNvwF2RhO4&_nc_oc=Adqep3CR66zaEekiXZZdHkpStcJU0A326-JGNxEQNei5gV6YQjqwh6_KKd5bBcJnR18&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=rd9GZeZeTg0fElVdPFWr0w&_nc_ss=7b2a8&oh=00_Af44xq8uSYJEUZb00juS0rsEcRYZGNru62-td7bkff4tvw&oe=6A0A2677" },
+            { name: "Pranto Biswas", role: "Operative", phone: "01768344230", address: "Dhaka", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-1/481010646_1026794692813707_6143640001998446109_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=110&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeFVUnQy0HH15FrZlMcnv906Vxk09t1K5aZXGTT23UrlplSYBckq8FwN3A8Z-drZ4IdBfAOtbdA3oZBugKUyoN9E&_nc_ohc=nV8Ecxa8XUEQ7kNvwE9sicO&_nc_oc=AdrYeapHZ3ksHijpE1MNJn93iv-p4h5eDTIAsnzfOfOe9-bJkgwXcKhS_bXH0DtqWGA&_nc_zt=24&_nc_ht=scontent.fdac134-1.fna&_nc_gid=NKkjMx3JkNasjmnJeqooSQ&_nc_ss=7b2a8&oh=00_Af7k_SDB6FO4xGNzIutFt6sIGTY3shv8vvT5INB7PrDuaQ&oe=6A0A217E" },
+            { name: "Samyy", role: "Operative", phone: "01612505049", address: "Kushtia, Khulna", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/696836728_2135255480654648_9164734055409742991_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGGL5hJs0-s5ycyOX0TLYnGOrAGhSYlDZw6sAaFJiUNnF1R6cR8ORjvNiJ74jBEqp_XlD91luDeK3mdzLGkV0Pd&_nc_ohc=bAzdSgltBaIQ7kNvwHfN2lB&_nc_oc=Adr-8trfHepcVsz_TAeeHtLLZOzdSzATDRRbl_zf6UOM9NwpGl13wvPJl0_bXXNR0Hw&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=i2ewYMuIyNk38n3vm98iNA&_nc_ss=7b2a8&oh=00_Af6JE7WICIgFhYH10En2n0D7aFzM7uPBqe6w8l8jTvYJ9g&oe=6A09F8E3" },
+            { name: "Saif Hasan", role: "Operative", phone: "01753326883", address: "Nilphamary", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472847701_122138044520451718_5717908140505922533_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeHsDZ_YiZjhVWCB9HMsORFQ3mD9V50tQdveYP1XnS1B261BATfFxPjeNaU6O2VkZ4QGlt4KHF5CPCROmWzhIt0K&_nc_ohc=CY_9fuHoKe8Q7kNvwGwf161&_nc_oc=AdoybMamA7dOdVVj53e-n2rSsyzLjayf7GKQtmKJMnfHa6Jle3EuIJbwPu6FIM9Urv4&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=p7mVdCOhfEjbjDweOyB9BQ&_nc_ss=7b2a8&oh=00_Af4vgSM2Hsm0QN52vC00cKU_HeSjb87ggRJrXNJubGeKFw&oe=6A0A2B85" },
+            { name: "Shahrear Lalon", role: "Operative", phone: "01767075237", address: "Mymensingh", img: "https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/472144298_1155661549558567_3609989594921465096_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFEZ2cL4cIyEFhkwpPshDxmrwg7-6FzdK2vCDv7oXN0rR3njOGQHXHTZAYJuPq5rdvrGIP4rRQlA1ALmbgeguCq&_nc_ohc=h0BPJmFoxLEQ7kNvwF_LJ45&_nc_oc=Ado568uHPM3kNSKI0EcVtKd9r5otMdQDr-Qo532MIINWmDh3tpIIOwO3FyiyaJfMrwA&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=VcLo6PiFZS538hBi9dKNAg&_nc_ss=7b2a8&oh=00_Af6giDS2PFwsq56rpKxzgb-evJq8hiGpn0HYOKabCwHaxg&oe=6A0A2283" }
+        ];
 
+        // Generate Slider
+        const sliderContainer = document.getElementById('members-slider');
+        sliderContainer.innerHTML = members.map((m, index) => `
+            <div class="slider-item">
+                <div class="rgb-box p-6 sm:p-8 h-full flex flex-col sm:flex-row items-center gap-8 shadow-[0_0_30px_rgba(0,0,0,0.8)] border border-sky-500/20">
+                    <!-- Image Side -->
+                    <div class="w-32 h-32 sm:w-44 sm:h-44 shrink-0 img-zoom-container border-2 border-sky-400 shadow-[0_0_25px_rgba(56,189,248,0.4)]" onclick="openImageModal('${m.img}')">
+                        <img src="${m.img}" class="w-full h-full object-cover" alt="${m.name}">
+                    </div>
+                    <!-- Details Side -->
+                    <div class="flex-1 text-center sm:text-left w-full">
+                        <h3 class="text-2xl sm:text-3xl font-bold gradient-text mb-2 drop-shadow-md">${m.name}</h3>
+                        <p class="text-green-400 text-sm mb-4 font-mono tracking-widest uppercase"><i class="fas fa-terminal mr-2"></i>${m.role}</p>
+                        
+                        <div class="space-y-3 text-sm text-gray-300 mb-6 font-mono bg-black/30 p-4 rounded-xl border border-gray-800">
+                            <p class="flex items-center justify-center sm:justify-start hover:text-sky-400 transition-colors">
+                                <i class="fas fa-phone-alt w-6 text-sky-500 text-center"></i> ${m.phone}
+                            </p>
+                            <p class="flex items-center justify-center sm:justify-start hover:text-sky-400 transition-colors truncate">
+                                <i class="fas fa-map-marker-alt w-6 text-sky-500 text-center"></i> ${m.address}
+                            </p>
+                        </div>
+
+                        <button onclick="openDetailsModal(${index})" class="w-full bg-gradient-to-r from-sky-900 to-slate-900 hover:from-sky-800 hover:to-sky-900 text-sky-300 border border-sky-500/50 px-6 py-3 rounded-xl text-sm transition-all shadow-[0_0_15px_rgba(56,189,248,0.2)] hover:shadow-[0_0_25px_rgba(56,189,248,0.5)] font-mono uppercase tracking-widest group">
+                            <i class="fas fa-search-plus mr-2 group-hover:scale-125 transition-transform"></i> Extract Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Modals Logic
+        function openImageModal(imgSrc) {
+            const modal = document.getElementById('image-modal');
+            const content = document.getElementById('image-modal-content');
+            const img = document.getElementById('modal-img');
+            
+            img.src = imgSrc;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Trigger animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-50');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function openDetailsModal(index) {
+            const m = members[index];
+            const modal = document.getElementById('details-modal');
+            const content = document.getElementById('details-modal-content');
+            const container = document.getElementById('modal-details-container');
+            
+            container.innerHTML = `
+                <div class="w-full md:w-2/5 flex flex-col items-center border-r border-sky-900/50 pr-0 md:pr-8">
+                    <div class="w-48 h-48 rounded-2xl overflow-hidden border-2 border-sky-400 shadow-[0_0_30px_rgba(56,189,248,0.5)] mb-6 img-zoom-container cursor-zoom-in" onclick="openImageModal('${m.img}')">
+                        <img src="${m.img}" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold gradient-text text-center uppercase tracking-wider">${m.name}</h3>
+                    <p class="text-green-400 text-sm font-mono uppercase tracking-widest mt-2 bg-green-500/10 px-3 py-1 rounded border border-green-500/30"><i class="fas fa-check-circle mr-1"></i> Active Status</p>
+                </div>
+                <div class="w-full md:w-3/5 flex flex-col justify-center space-y-6">
+                    <h4 class="text-xl font-bold border-b border-sky-500/30 pb-3 text-sky-400 font-mono uppercase tracking-widest">
+                        <i class="fas fa-folder-open mr-2"></i> Classified Intel
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 gap-4 text-sm font-mono">
+                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
+                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Contact Coordinate</span>
+                            <span class="text-white text-base group-hover:text-sky-300 transition-colors"><i class="fas fa-phone mr-3 text-sky-500"></i>${m.phone}</span>
+                        </div>
+                        
+                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
+                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Base Location</span>
+                            <span class="text-white text-base group-hover:text-sky-300 transition-colors"><i class="fas fa-map-marker-alt mr-3 text-sky-500"></i>${m.address}</span>
+                        </div>
+                        
+                        <div class="bg-black/50 p-4 rounded-xl border border-sky-900 hover:border-sky-500 transition-colors group">
+                            <span class="text-gray-500 block text-xs uppercase mb-1 tracking-widest">Clearance Level</span>
+                            <span class="text-green-400 text-base flex items-center"><i class="fas fa-shield-alt mr-3"></i> Top Secret (Lvl-5)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Trigger animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-50');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModals() {
+            const imgModal = document.getElementById('image-modal');
+            const imgContent = document.getElementById('image-modal-content');
+            const detailsModal = document.getElementById('details-modal');
+            const detailsContent = document.getElementById('details-modal-content');
+            
+            imgModal.classList.add('opacity-0');
+            imgContent.classList.remove('scale-100');
+            imgContent.classList.add('scale-50');
+            
+            detailsModal.classList.add('opacity-0');
+            detailsContent.classList.remove('scale-100');
+            detailsContent.classList.add('scale-50');
+            
+            setTimeout(() => {
+                imgModal.classList.add('hidden');
+                imgModal.classList.remove('flex');
+                detailsModal.classList.add('hidden');
+                detailsModal.classList.remove('flex');
+            }, 300);
+        }
+
+        // Close modals on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModals();
+        });
+
+
+        // Password Protection
+        function checkAccess() {
+            const key = document.getElementById('access-key').value;
+            const correctKey = "octasquad2026";
             
             if(key === correctKey) {
                 document.getElementById('login-overlay').classList.add('hidden');
@@ -182,17 +452,17 @@
             const main = document.getElementById('main-content');
             
             loader.classList.remove('hidden');
+            loader.classList.add('flex');
             
             const logs = [
-                "> INITIALIZING SYSTEM BOOT...",
-                "> CONNECTING TO SQUAD ENCRYPTED NETWORK...",
-                "> DECRYPTING MEMBER DATA [Samiul, Uzzal, Tamim...]",
-                "> FETCHING LOCATION: DOTTOPARA (V899+J29)...",
-                "> CALCULATING MONTHLY BUDGET: ৳6,500...",
-                "> BYPASSING SECURITY PROTOCOLS...",
-                "> ACCESSING FINANCIAL GATEWAYS...",
-                "> SYNCHRONIZING BKASH API...",
-                "> SYSTEM READY: WELCOME TO THE OCTA SQUAD."
+                "> INITIALIZING SECURE PROTOCOLS...",
+                "> BYPASSING FIREWALLS...",
+                "> CONNECTING TO ENCRYPTED SQUAD NETWORK...",
+                "> DECRYPTING OPERATIVE DATA FILES...",
+                "> EXTRACTING BASE COORDINATES...",
+                "> SYNCING FINANCIAL LEDGER...",
+                "> ESTABLISHING UPLINK TO BKASH...",
+                "> ACCESS GRANTED. WELCOME SQUAD MEMBER."
             ];
 
             let logIndex = 0;
@@ -200,13 +470,14 @@
                 if(logIndex < logs.length) {
                     const line = document.createElement('div');
                     line.textContent = logs[logIndex];
+                    line.className = "mb-1 text-sky-400 font-mono tracking-wide typing-effect";
                     terminal.appendChild(line);
                     terminal.scrollTop = terminal.scrollHeight;
                     logIndex++;
                 } else {
                     clearInterval(logInterval);
                 }
-            }, 500);
+            }, 600); // 8 logs * 600ms = 4.8 seconds
 
             let progress = 0;
             const progressInterval = setInterval(() => {
@@ -217,24 +488,27 @@
                 if(progress >= 100) {
                     clearInterval(progressInterval);
                     setTimeout(() => {
-                        loader.classList.add('hidden');
-                        main.classList.remove('hidden');
+                        loader.classList.add('opacity-0', 'transition-opacity', 'duration-500');
                         setTimeout(() => {
-                            main.classList.add('opacity-100');
-                            document.body.classList.remove('overflow-hidden');
-                        }, 100);
+                            loader.classList.add('hidden');
+                            loader.classList.remove('flex', 'opacity-0');
+                            main.classList.remove('hidden');
+                            setTimeout(() => {
+                                main.classList.add('opacity-100');
+                                document.body.classList.remove('overflow-hidden');
+                            }, 100);
+                        }, 500);
                     }, 500);
                 }
             }, 50); // Total 5 seconds (50ms * 100)
         }
 
         function payViaBkash() {
-
             const amount = 6500;
             const bKashNumber = "017XXXXXXXX"; // replace with real number
             const paymentUrl = `https://shop.bkash.com/payment/pay?amount=${amount}&receiver=${bKashNumber}`;
             
-            if(confirm("Are you sure you want to pay ৳6,500?")) {
+            if(confirm("AUTHORIZATION REQUIRED: Transfer ৳6,500 to Base Command?")) {
                 window.location.href = paymentUrl;
             }
         }
